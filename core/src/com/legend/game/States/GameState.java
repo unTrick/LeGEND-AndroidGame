@@ -18,18 +18,35 @@ import com.legend.game.LeGENDGAME;
 
 public abstract class GameState {
 
-    protected OrthographicCamera cam;
-    public Viewport gameView;
-    //protected Vector3 mouse;
+    protected OrthographicCamera gameCam;
+    protected Viewport gameView;
     protected GameStateManager gsm;
 
     protected GameState(GameStateManager gsm){
         this.gsm = gsm;
-        cam = new OrthographicCamera();
-        gameView = new StretchViewport(1280, 720, cam);
-        //mouse = new Vector3();
+        gameCam = new OrthographicCamera();
+        gameCam.setToOrtho(false, LeGENDGAME.WIDTH, LeGENDGAME.HEIGHT);
+        gameView = new StretchViewport(1280, 720, gameCam);
 
     }
+
+
+    protected void walkLeft(){
+        gameCam.translate(-3, -2, 0); // Left
+    }
+
+    protected void walkRight(){
+        gameCam.translate(3, 2, 0); // Right
+    }
+
+    protected void walkUp(){
+        gameCam.translate(-3, 2, 0); // Up
+    }
+
+    protected void walkDown(){
+        gameCam.translate(3, -2, 0); // Down
+    }
+
     protected abstract void handleInput();
     public abstract void update(float dt);
     public abstract void render(SpriteBatch sb);

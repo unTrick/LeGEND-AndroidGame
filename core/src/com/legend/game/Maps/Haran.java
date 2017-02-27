@@ -18,6 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.legend.game.BlenderObjects.MainCharacter;
+import com.legend.game.BlenderObjects.RandomPersonOne;
+import com.legend.game.BlenderObjects.RandomPersonTwo;
 import com.legend.game.Buttons.ActualGameButtons;
 import com.legend.game.Buttons.Controller;
 import com.legend.game.HUD.HUD;
@@ -25,7 +27,6 @@ import com.legend.game.LeGENDGAME;
 import com.legend.game.States.GameMenu;
 import com.legend.game.States.GameState;
 import com.legend.game.States.GameStateManager;
-import com.sun.xml.internal.bind.v2.TODO;
 
 /**
  * Created by Patrick Sky on 2/25/2017.
@@ -34,9 +35,11 @@ import com.sun.xml.internal.bind.v2.TODO;
 public class Haran extends GameState {
 
     private Stage stage;
-    private OrthographicCamera camera;
 
     private MainCharacter mainCharacter;
+    private RandomPersonOne randomPersonOne;
+    private RandomPersonTwo randomPersonTwo;
+
     private HUD hud;
     private Controller controller;
     private ActualGameButtons actualGameButtons;
@@ -45,20 +48,16 @@ public class Haran extends GameState {
     private TiledMap map; // the map itself
     private IsometricTiledMapRenderer renderer; // it renders the map into the screen
 
-
-
-
-
     public Haran(final GameStateManager gsm){
         super(gsm);
 
         mainCharacter = new MainCharacter();
+        randomPersonOne = new RandomPersonOne();
+        randomPersonTwo = new RandomPersonTwo();
+
         controller = new Controller();
         hud = new HUD();
         actualGameButtons = new ActualGameButtons();
-
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, LeGENDGAME.WIDTH, LeGENDGAME.HEIGHT);
         stage = new Stage(gameView);
 
         Gdx.input.setInputProcessor(new InputMultiplexer(controller.getStageC(), actualGameButtons.getStage()));
@@ -66,11 +65,11 @@ public class Haran extends GameState {
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("tiledmaps/Haran.tmx");
         renderer = new IsometricTiledMapRenderer(map, 2f);
-        camera.position.set((gameView.getWorldWidth() / 2) + (gameView.getWorldWidth() / 12) , 0, 0);
+        gameCam.position.set((gameView.getWorldWidth() / 2) + (gameView.getWorldWidth() / 12) , 0, 0);
 
 
         actualGame();
-        camera.update();
+        gameCam.update();
 
     }
 
@@ -98,31 +97,24 @@ public class Haran extends GameState {
     @Override
     protected void handleInput() {
 
-        if (mainCharacter.getCamera().position.x < -786) {
-        }
 
-        if (mainCharacter.getCamera().position.x > 644) {
-        }
-
-        if (mainCharacter.getCamera().position.z > 359) {
-
-        }
-
-        if (mainCharacter.getCamera().position.z < -273) {
-
-        }
 
         if (controller.isLeftPressed()){
             mainCharacter.walkLeft();
+//            walkLeft();
         }
         else if (controller.isRightPressed()){
-            mainCharacter.walkRight();
+           mainCharacter.walkRight();
+//            walkRight();
+
         }
         else if (controller.isUpPressed()){
             mainCharacter.walkUp();
+//            walkUp();
         }
         else if (controller.isDownPressed()){
             mainCharacter.walkDown();
+//            walkDown();
         }
 
 
@@ -131,9 +123,13 @@ public class Haran extends GameState {
     @Override
     public void update(float dt) {
         handleInput();
-        camera.update();
-        renderer.setView(camera);
 
+
+        gameCam.update();
+        renderer.setView(gameCam);
+
+        randomPersonTwo.update();
+        randomPersonOne.update();
         mainCharacter.update();
         hud.update(dt);
 
@@ -151,6 +147,9 @@ public class Haran extends GameState {
         stage.draw();
 
         mainCharacter.render();
+        randomPersonOne.render();
+        randomPersonTwo.render();
+
         controller.render();
         actualGameButtons.getStage().draw();
         hud.stage.draw();

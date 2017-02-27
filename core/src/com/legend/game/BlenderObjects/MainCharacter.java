@@ -10,6 +10,9 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
+import com.badlogic.gdx.math.Quaternion;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -24,7 +27,6 @@ public class MainCharacter {
     OrthographicCamera camera;
     AssetManager assets;
     private ModelInstance inst;
-
 
 
     Array<ModelInstance> instances = new Array<ModelInstance>();
@@ -64,21 +66,49 @@ public class MainCharacter {
 
     public void update() {
 
-
-        if(camera.position.x > 700){
-            camera.position.x = 700;
+        if(Gdx.input.justTouched()){
+//            System.out.println("this is x" + camera.position); // 1557 XL, -1557 XR, 786 ZUP -660 zdown
+            System.out.println(inst.transform.getRotation(new Quaternion()));
         }
 
-        if(camera.position.x < -1181){
-            camera.position.x = -1181;
+        if(camera.position.x < -1557/2){
+            camera.position.x = -1557/2; // Right
         }
 
-        if(camera.position.z > 380){
-            camera.position.z = 380;
+        if(camera.position.x > 1557/2){
+            camera.position.x = 1557/2; // Left
         }
 
-        if(camera.position.z < -300){
-            camera.position.z = -300;
+        if(camera.position.z < -660/2){
+            camera.position.z = -660/2; // Down
+        }
+
+        if(camera.position.z > 786/2){
+            camera.position.z = 786/2; // Up
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+            inst.transform.setToRotation(-560 , 560 , -120,45); //front view
+            inst.calculateTransforms();
+            walkDown();
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)){
+            inst.transform.setToRotation(new Vector3(0 , -800 , -360),180); // right view
+            inst.calculateTransforms();
+            walkUp();
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+            inst.transform.setToRotation(new Vector3(-500 , -300 , 90),45); // left view
+            inst.calculateTransforms();
+            walkLeft();
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+            inst.transform.setToRotation(new Vector3(500 , 300 , -90),90); // right view
+            inst.calculateTransforms();
+            walkRight();
         }
 
         camera.update();
@@ -95,8 +125,16 @@ public class MainCharacter {
         modelBatch.end();
     }
 
+    public void dispose(){
+        modelBatch.dispose();
+        instances.clear();
+        assets.dispose();
+    }
+
     public void walkLeft(){
         camera.translate(3, 0, -2);
+        inst.transform.setToRotation(new Vector3(-500 , -300 , 90),45); // left view
+        inst.calculateTransforms();
     }
 
     public void walkRight(){
@@ -108,6 +146,8 @@ public class MainCharacter {
     }
 
     public void walkDown(){
+        inst.transform.setToRotation(-560 , 560 , -120,45); //front view
+        inst.calculateTransforms();
         camera.translate(-3, 0, -2);
     }
 
@@ -115,5 +155,4 @@ public class MainCharacter {
     public OrthographicCamera getCamera() {
         return camera;
     }
-
 }

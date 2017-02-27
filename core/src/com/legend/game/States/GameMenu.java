@@ -12,6 +12,7 @@ package com.legend.game.States;
         import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
         import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
         import com.badlogic.gdx.utils.viewport.StretchViewport;
+        import com.legend.game.CutScenes.GenesisIntro;
         import com.legend.game.LeGENDGAME;
         import com.legend.game.Maps.Haran;
 
@@ -46,7 +47,7 @@ public class GameMenu extends GameState{
            @Override
             public void touchUp(InputEvent e, float x, float y, int point, int button){
                 dispose();
-                gsm.set(new StartGameState(gsm));
+                gsm.set(new GenesisIntro(gsm));
            }
         });
 
@@ -99,7 +100,6 @@ public class GameMenu extends GameState{
         btnBook.addListener(new ClickListener(){
             @Override
             public void touchUp(InputEvent e, float x, float y, int point, int button){
-                gsm.set(new StartGameState(gsm));
             }
         });
 
