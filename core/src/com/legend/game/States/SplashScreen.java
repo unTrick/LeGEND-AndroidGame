@@ -41,6 +41,7 @@ public class SplashScreen extends GameState {
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
+                    LeGENDGAME.backgroundMusic.play();
                     gsm.set(new GameMenu(gsm));
                     dispose();
                 }

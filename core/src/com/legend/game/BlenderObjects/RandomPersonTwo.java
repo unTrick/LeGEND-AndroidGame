@@ -11,35 +11,35 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.legend.game.States.BlenderObjectsManager;
 
 /**
  * Created by Patrick Sky on 2/27/2017.
  */
 
-public class RandomPersonTwo {
+public class RandomPersonTwo extends BlenderObjectsManager {
 
-    ModelBatch modelBatch;
+
     Environment environment;
-    OrthographicCamera camera;
     AssetManager assets;
     private ModelInstance inst;
+    ModelBatch mbatch;
+
 
     Array<ModelInstance> instances = new Array<ModelInstance>();
 
     public RandomPersonTwo(){
 
         // Create ModelBatch that will render all models using a camera
-        modelBatch = new ModelBatch();
 
         // Create a camera and point it to our model
-        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.position.set(0f, 500f, 0f);
-        camera.lookAt(0,0,0);
-        camera.near = 0.1f;
-        camera.far = 3000f;
-        camera.zoom += 2f;
-        camera.update();
+        mbatch = new ModelBatch();
+        modelCam.position.set(0f, 500f, 0f);
+        modelCam.lookAt(0,0,0);
+        modelCam.near = 0.1f;
+        modelCam.far = 3000f;
+        modelCam.zoom += 2f;
+        modelCam.update();
 
         assets = new AssetManager();
         assets.load("extraTwo.g3db", Model.class);
@@ -59,25 +59,29 @@ public class RandomPersonTwo {
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -0.8f, -10f, -10f));
     }
 
-    public void update() {
-        camera.update();
+    @Override
+    public void update(float dt) {
+        if(Gdx.input.justTouched()){
+//            System.out.println("this is x" + camera.position); // 1557 XL, -1557 XR, 786 ZUP -660 zdown
+        }
+        modelCam.update();
     }
-
 
     public void render() {
-
-        modelBatch.begin(camera);
-        modelBatch.render(instances, environment);
-        modelBatch.end();
+        mbatch.begin(modelCam);
+        mbatch.render(instances, environment);
+        mbatch.end();
     }
 
-    public void dispose(){
-        modelBatch.dispose();
+    @Override
+    public void dispose() {
+        mbatch.dispose();
         instances.clear();
         assets.dispose();
     }
 
-    public OrthographicCamera getCamera() {
-        return camera;
+    @Override
+    public void resize(int width, int height) {
+
     }
 }

@@ -3,19 +3,13 @@ package com.legend.game.Maps;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.legend.game.BlenderObjects.MainCharacter;
 import com.legend.game.BlenderObjects.RandomPersonOne;
@@ -23,7 +17,6 @@ import com.legend.game.BlenderObjects.RandomPersonTwo;
 import com.legend.game.Buttons.ActualGameButtons;
 import com.legend.game.Buttons.Controller;
 import com.legend.game.HUD.HUD;
-import com.legend.game.LeGENDGAME;
 import com.legend.game.States.GameMenu;
 import com.legend.game.States.GameState;
 import com.legend.game.States.GameStateManager;
@@ -48,8 +41,10 @@ public class Haran extends GameState {
     private TiledMap map; // the map itself
     private IsometricTiledMapRenderer renderer; // it renders the map into the screen
 
+
     public Haran(final GameStateManager gsm){
         super(gsm);
+
 
         mainCharacter = new MainCharacter();
         randomPersonOne = new RandomPersonOne();
@@ -90,7 +85,6 @@ public class Haran extends GameState {
             }
         });
 
-
     }
 
 
@@ -128,8 +122,8 @@ public class Haran extends GameState {
         gameCam.update();
         renderer.setView(gameCam);
 
-        randomPersonTwo.update();
-        randomPersonOne.update();
+        randomPersonTwo.update(dt);
+        randomPersonOne.update(dt);
         mainCharacter.update();
         hud.update(dt);
 
@@ -152,6 +146,7 @@ public class Haran extends GameState {
 
         controller.render();
         actualGameButtons.getStage().draw();
+        hud.getMapName().setText("Haran");
         hud.stage.draw();
     }
 

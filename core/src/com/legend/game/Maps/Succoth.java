@@ -1,15 +1,12 @@
-package com.legend.game.Houses;
+package com.legend.game.Maps;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -17,20 +14,17 @@ import com.legend.game.BlenderObjects.MainCharacter;
 import com.legend.game.Buttons.ActualGameButtons;
 import com.legend.game.Buttons.Controller;
 import com.legend.game.HUD.HUD;
-import com.legend.game.LeGENDGAME;
 import com.legend.game.States.GameMenu;
 import com.legend.game.States.GameState;
 import com.legend.game.States.GameStateManager;
 
-
 /**
- * Created by Patrick Sky on 2/27/2017.
+ * Created by Patrick Sky on 2/28/2017.
  */
 
-public class AbrahamHouse extends GameState {
+public class Succoth extends GameState{
 
     private Stage stage;
-
 
     private MainCharacter mainCharacter;
     private HUD hud;
@@ -39,15 +33,10 @@ public class AbrahamHouse extends GameState {
 
     private TmxMapLoader mapLoader;//load the map into the game
     private TiledMap map; // the map itself
-    private IsometricTiledMapRenderer renderer; // it renders the map into the scree
+    private IsometricTiledMapRenderer renderer; // it renders the map into the screen
 
-//    private TiledMapTileLayer collisionLayer;
-//    boolean collisionX = false, collisionY = false;
-//    float tiledWidth = collisionLayer.getTileWidth(), tiledHeight = collisionLayer.getHeight();
-
-    public AbrahamHouse(GameStateManager gsm){
+    public Succoth(GameStateManager gsm){
         super(gsm);
-
 
         mainCharacter = new MainCharacter();
         controller = new Controller();
@@ -59,11 +48,10 @@ public class AbrahamHouse extends GameState {
         Gdx.input.setInputProcessor(new InputMultiplexer(controller.getStageC(), actualGameButtons.getStage()));
 
         mapLoader = new TmxMapLoader();
-        map = mapLoader.load("tiledmaps/AbrahamsHouse.tmx");
-        renderer = new IsometricTiledMapRenderer(map);
-        gameCam.position.set(gameView.getWorldWidth() + (gameView.getWorldWidth() / 4), gameView.getScreenHeight() / 2   , 0);
+        map = mapLoader.load("tiledmaps/Succoth.tmx");
+        renderer = new IsometricTiledMapRenderer(map, 2f);
+        gameCam.position.set((gameView.getWorldWidth() / 2) + (gameView.getWorldWidth() / 12) , 0, 0);
 
-//        collisionLayer = (TiledMapTileLayer)map.getLayers().get(25);;
 
         actualGame();
         gameCam.update();
@@ -92,14 +80,12 @@ public class AbrahamHouse extends GameState {
     @Override
     protected void handleInput() {
 
-
-
         if (controller.isLeftPressed()){
             mainCharacter.walkLeft();
 //            walkLeft();
         }
         else if (controller.isRightPressed()){
-           mainCharacter.walkRight();
+            mainCharacter.walkRight();
 //            walkRight();
 
         }
@@ -112,35 +98,17 @@ public class AbrahamHouse extends GameState {
 //            walkDown();
         }
 
-
-//        // experimental starts
-//        if(Gdx.input.justTouched()){
-//
-//            collisionX = collisionLayer.getCell((int)( 1 / tiledWidth),(int)( 1 / tiledHeight)).getTile()
-//                    .getProperties().containsKey("block");
-//
-//
-//            if (collisionX){
-//                System.out.println("touch");
-//            }
-//            if (collisionX = true){
-//                System.out.println("touchy touch");
-//            }
-//            System.out.println(collisionX);
-//
-//        }
-//        // experimental ends
-
     }
 
     @Override
     public void update(float dt) {
         handleInput();
+
         gameCam.update();
         renderer.setView(gameCam);
 
         mainCharacter.update();
-        hud.getMapName().setText("Abraham's House");
+        hud.getMapName().setText("Succoth");
         hud.update(dt);
     }
 
@@ -169,6 +137,5 @@ public class AbrahamHouse extends GameState {
     public void resize(int width, int height) {
 
     }
-
 
 }

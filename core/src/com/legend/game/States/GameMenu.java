@@ -31,7 +31,6 @@ public class GameMenu extends GameState{
     public GameMenu(final GameStateManager gsm) {
         super(gsm);
         background = new Texture("GameMenuBG.jpg");
-        LeGENDGAME.backgroundMusic.play();
         clickSound = Gdx.audio.newSound(Gdx.files.internal("button-16.mp3"));
         stage = new Stage(new StretchViewport(1280, 720));
 

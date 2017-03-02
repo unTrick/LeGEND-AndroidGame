@@ -83,21 +83,21 @@ public class Negeb extends GameState {
     protected void handleInput() {
 
         if (controller.isLeftPressed()){
-//            mainCharacter.walkLeft();
-            walkLeft();
+            mainCharacter.walkLeft();
+//            walkLeft();
         }
         else if (controller.isRightPressed()){
-//           mainCharacter.walkRight();
-            walkRight();
+           mainCharacter.walkRight();
+//            walkRight();
 
         }
         else if (controller.isUpPressed()){
-//            mainCharacter.walkUp();
-            walkUp();
+            mainCharacter.walkUp();
+//            walkUp();
         }
         else if (controller.isDownPressed()){
-//            mainCharacter.walkDown();
-            walkDown();
+            mainCharacter.walkDown();
+//            walkDown();
         }
 
     }
@@ -126,6 +126,7 @@ public class Negeb extends GameState {
         mainCharacter.render();
         controller.render();
         actualGameButtons.getStage().draw();
+        hud.getMapName().setText("Negeb");
         hud.stage.draw();
     }
 

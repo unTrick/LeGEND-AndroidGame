@@ -68,7 +68,7 @@ public class MainCharacter {
 
         if(Gdx.input.justTouched()){
 //            System.out.println("this is x" + camera.position); // 1557 XL, -1557 XR, 786 ZUP -660 zdown
-            System.out.println(inst.transform.getRotation(new Quaternion()));
+            //System.out.println(inst.transform.getRotation(new Quaternion()));
         }
 
         if(camera.position.x < -1557/2){
@@ -132,23 +132,23 @@ public class MainCharacter {
     }
 
     public void walkLeft(){
-        camera.translate(3, 0, -2);
+        inst.transform.translate(3, 0, -2);
         inst.transform.setToRotation(new Vector3(-500 , -300 , 90),45); // left view
         inst.calculateTransforms();
     }
 
     public void walkRight(){
-        camera.translate(-3, 0, 2);
+        inst.transform.translate(-3, 0, 2);
     }
 
     public void walkUp(){
-        camera.translate(3, 0, 2);
+        inst.transform.translate(3, 0, 2);
     }
 
     public void walkDown(){
         inst.transform.setToRotation(-560 , 560 , -120,45); //front view
         inst.calculateTransforms();
-        camera.translate(-3, 0, -2);
+        inst.transform.translate(-3, 0, -2);
     }
 
 

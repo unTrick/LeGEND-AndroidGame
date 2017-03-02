@@ -3,12 +3,11 @@ package com.legend.game.States;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
- * Created by Patrick Sky on 2/11/2017.
+ * Created by Patrick Sky on 3/2/2017.
  */
+public class GameHelp extends GameState{
 
-public class BibleBook extends GameState {
-
-    public BibleBook(GameStateManager gsm){
+    public GameHelp(GameStateManager gsm){
         super(gsm);
     }
 
