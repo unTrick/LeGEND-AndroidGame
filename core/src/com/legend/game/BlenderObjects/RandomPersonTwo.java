@@ -9,31 +9,38 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-import com.legend.game.States.BlenderObjectsManager;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.legend.game.LeGENDGAME;
 
 /**
  * Created by Patrick Sky on 2/27/2017.
  */
 
-public class RandomPersonTwo extends BlenderObjectsManager {
+public class RandomPersonTwo {
 
 
     Environment environment;
     AssetManager assets;
     private ModelInstance inst;
     ModelBatch mbatch;
+    private OrthographicCamera modelCam;
+    private Viewport modelView;
 
 
     Array<ModelInstance> instances = new Array<ModelInstance>();
 
     public RandomPersonTwo(){
 
-        // Create ModelBatch that will render all models using a camera
+        modelCam = new OrthographicCamera();
+        modelCam.setToOrtho(false, LeGENDGAME.WIDTH, LeGENDGAME.HEIGHT);
+        modelView = new StretchViewport(1280, 720, modelCam);
 
-        // Create a camera and point it to our model
+        // Create ModelBatch that will render all models using a camera
         mbatch = new ModelBatch();
+        // Create a camera and point it to our model
+
         modelCam.position.set(0f, 500f, 0f);
         modelCam.lookAt(0,0,0);
         modelCam.near = 0.1f;
@@ -59,8 +66,7 @@ public class RandomPersonTwo extends BlenderObjectsManager {
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -0.8f, -10f, -10f));
     }
 
-    @Override
-    public void update(float dt) {
+    public void update() {
         if(Gdx.input.justTouched()){
 //            System.out.println("this is x" + camera.position); // 1557 XL, -1557 XR, 786 ZUP -660 zdown
         }
@@ -73,14 +79,13 @@ public class RandomPersonTwo extends BlenderObjectsManager {
         mbatch.end();
     }
 
-    @Override
     public void dispose() {
         mbatch.dispose();
         instances.clear();
         assets.dispose();
     }
 
-    @Override
+
     public void resize(int width, int height) {
 
     }

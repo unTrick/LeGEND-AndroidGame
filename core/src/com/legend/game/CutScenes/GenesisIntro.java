@@ -31,7 +31,7 @@ import com.legend.game.States.GameStateManager;
 public class GenesisIntro extends GameState{
 
     private Stage stage;
-    private Image frontIntro, firstCS, secondCS, thirdCS, fourthCS, fifthCS, sixthCS, seventhCS, House;
+    private Image frontIntro, firstCS, secondCS, thirdCS, fourthCS, fifthCS, sixthCS, seventhCS;
     private static Music storyMusic;
     private Texture btnCont, btnSkip, btnFirstNext, btnSecondNext, btnthirdNext, btnFourthNext, btnFifthNext, btnSixthNext, btnSeventhNext, btnMenu;
 

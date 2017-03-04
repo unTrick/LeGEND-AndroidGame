@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.legend.game.BlenderObjects.MainCharacter;
+import com.legend.game.BlenderObjects.RandomPersonOne;
 import com.legend.game.Buttons.ActualGameButtons;
 import com.legend.game.Buttons.Controller;
 import com.legend.game.HUD.HUD;
@@ -41,15 +42,12 @@ public class AbrahamHouse extends GameState {
     private TiledMap map; // the map itself
     private IsometricTiledMapRenderer renderer; // it renders the map into the scree
 
-//    private TiledMapTileLayer collisionLayer;
-//    boolean collisionX = false, collisionY = false;
-//    float tiledWidth = collisionLayer.getTileWidth(), tiledHeight = collisionLayer.getHeight();
 
     public AbrahamHouse(GameStateManager gsm){
         super(gsm);
 
 
-        mainCharacter = new MainCharacter();
+        mainCharacter = new MainCharacter(LeGENDGAME.WIDTH + (LeGENDGAME.WIDTH / 2) , 0, LeGENDGAME.HEIGHT / 2);
         controller = new Controller();
         hud = new HUD();
         actualGameButtons = new ActualGameButtons();
@@ -62,9 +60,6 @@ public class AbrahamHouse extends GameState {
         map = mapLoader.load("tiledmaps/AbrahamsHouse.tmx");
         renderer = new IsometricTiledMapRenderer(map);
         gameCam.position.set(gameView.getWorldWidth() + (gameView.getWorldWidth() / 4), gameView.getScreenHeight() / 2   , 0);
-
-//        collisionLayer = (TiledMapTileLayer)map.getLayers().get(25);;
-
         actualGame();
         gameCam.update();
     }
@@ -95,53 +90,65 @@ public class AbrahamHouse extends GameState {
 
 
         if (controller.isLeftPressed()){
-            mainCharacter.walkLeft();
+            if (actualGameButtons.isRunPressed()){
+//                mainCharacter.walkLeftSpeed();
+            }
+            else {
+                mainCharacter.walkLeft(1);
+            }
+
 //            walkLeft();
         }
         else if (controller.isRightPressed()){
-           mainCharacter.walkRight();
+            if (actualGameButtons.isRunPressed()){
+//                mainCharacter.walkRightSpeed();
+            }
+            else {
+                mainCharacter.walkRight(1);
+            }
+
 //            walkRight();
 
         }
         else if (controller.isUpPressed()){
-            mainCharacter.walkUp();
+            if (actualGameButtons.isRunPressed()){
+//                mainCharacter.walkUpSpeed();
+            }
+            else {
+                mainCharacter.walkUp(1);
+                System.out.println(mainCharacter.getPosition());
+            }
+
 //            walkUp();
         }
         else if (controller.isDownPressed()){
-            mainCharacter.walkDown();
+            if (actualGameButtons.isRunPressed()){
+//                mainCharacter.walkDownSpeed();
+            }
+            else {
+                mainCharacter.walkDown(1);
+            }
+
 //            walkDown();
         }
 
-
-//        // experimental starts
-//        if(Gdx.input.justTouched()){
-//
-//            collisionX = collisionLayer.getCell((int)( 1 / tiledWidth),(int)( 1 / tiledHeight)).getTile()
-//                    .getProperties().containsKey("block");
-//
-//
-//            if (collisionX){
-//                System.out.println("touch");
-//            }
-//            if (collisionX = true){
-//                System.out.println("touchy touch");
-//            }
-//            System.out.println(collisionX);
-//
-//        }
-//        // experimental ends
 
     }
 
     @Override
     public void update(float dt) {
-        handleInput();
-        gameCam.update();
-        renderer.setView(gameCam);
 
-        mainCharacter.update();
+
+
+        gameCam.position.x = mainCharacter.getPosition().x;
+        gameCam.position.y = mainCharacter.getPosition().z;
+
+        handleInput();
+        renderer.setView(gameCam);
+        mainCharacter.update(dt);
         hud.getMapName().setText("Abraham's House");
         hud.update(dt);
+        gameCam.update();
     }
 
     @Override

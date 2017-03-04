@@ -40,7 +40,7 @@ public class Negeb extends GameState {
     public Negeb(GameStateManager gsm){
         super(gsm);
 
-        mainCharacter = new MainCharacter();
+        mainCharacter = new MainCharacter(LeGENDGAME.WIDTH / 2 , 500, LeGENDGAME.HEIGHT / 2);
         controller = new Controller();
         hud = new HUD();
         actualGameButtons = new ActualGameButtons();
@@ -83,20 +83,20 @@ public class Negeb extends GameState {
     protected void handleInput() {
 
         if (controller.isLeftPressed()){
-            mainCharacter.walkLeft();
+            mainCharacter.walkLeft(1);
 //            walkLeft();
         }
         else if (controller.isRightPressed()){
-           mainCharacter.walkRight();
+           mainCharacter.walkRight(1);
 //            walkRight();
 
         }
         else if (controller.isUpPressed()){
-            mainCharacter.walkUp();
+            mainCharacter.walkUp(1);
 //            walkUp();
         }
         else if (controller.isDownPressed()){
-            mainCharacter.walkDown();
+            mainCharacter.walkDown(1);
 //            walkDown();
         }
 
@@ -109,7 +109,7 @@ public class Negeb extends GameState {
         gameCam.update();
         renderer.setView(gameCam);
 
-        mainCharacter.update();
+        mainCharacter.update(dt);
         hud.update(dt);
     }
 

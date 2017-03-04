@@ -11,6 +11,7 @@ package com.legend.game.States;
         import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
         import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
         import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+        import com.badlogic.gdx.utils.Timer;
         import com.badlogic.gdx.utils.viewport.StretchViewport;
         import com.legend.game.CutScenes.GenesisIntro;
         import com.legend.game.LeGENDGAME;
@@ -33,6 +34,7 @@ public class GameMenu extends GameState{
         background = new Texture("GameMenuBG.jpg");
         clickSound = Gdx.audio.newSound(Gdx.files.internal("button-16.mp3"));
         stage = new Stage(new StretchViewport(1280, 720));
+        new Timer().stop();
 
         Gdx.input.setInputProcessor(stage);
 
@@ -86,7 +88,7 @@ public class GameMenu extends GameState{
         btnHelp.addListener(new ClickListener(){
             @Override
             public void touchUp(InputEvent e, float x, float y, int point, int button){
-                gsm.set(new Haran(gsm));
+                gsm.set(new GameHelp(gsm));
             }
         });
 
@@ -99,6 +101,7 @@ public class GameMenu extends GameState{
         btnBook.addListener(new ClickListener(){
             @Override
             public void touchUp(InputEvent e, float x, float y, int point, int button){
+                gsm.set(new BibleBook(gsm));
             }
         });
 

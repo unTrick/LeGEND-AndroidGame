@@ -14,6 +14,7 @@ import com.legend.game.BlenderObjects.MainCharacter;
 import com.legend.game.Buttons.ActualGameButtons;
 import com.legend.game.Buttons.Controller;
 import com.legend.game.HUD.HUD;
+import com.legend.game.LeGENDGAME;
 import com.legend.game.States.GameMenu;
 import com.legend.game.States.GameState;
 import com.legend.game.States.GameStateManager;
@@ -38,7 +39,7 @@ public class Horeb extends GameState{
     public Horeb(GameStateManager gsm){
         super(gsm);
 
-        mainCharacter = new MainCharacter();
+        mainCharacter = new MainCharacter(LeGENDGAME.WIDTH / 2 , 500, LeGENDGAME.HEIGHT / 2);
         controller = new Controller();
         hud = new HUD();
         actualGameButtons = new ActualGameButtons();
@@ -81,20 +82,20 @@ public class Horeb extends GameState{
     protected void handleInput() {
 
         if (controller.isLeftPressed()){
-            mainCharacter.walkLeft();
+            mainCharacter.walkLeft(1);
 //            walkLeft();
         }
         else if (controller.isRightPressed()){
-            mainCharacter.walkRight();
+            mainCharacter.walkRight(1);
 //            walkRight();
 
         }
         else if (controller.isUpPressed()){
-            mainCharacter.walkUp();
+            mainCharacter.walkUp(1);
 //            walkUp();
         }
         else if (controller.isDownPressed()){
-            mainCharacter.walkDown();
+            mainCharacter.walkDown(1);
 //            walkDown();
         }
 
@@ -107,7 +108,7 @@ public class Horeb extends GameState{
         gameCam.update();
         renderer.setView(gameCam);
 
-        mainCharacter.update();
+        mainCharacter.update(dt);
         hud.getMapName().setText("horeb");
         hud.update(dt);
     }

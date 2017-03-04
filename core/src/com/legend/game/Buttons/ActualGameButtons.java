@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -23,7 +25,7 @@ public class ActualGameButtons {
     private ImageButton btnHome, btnTalk, btnRun, btnGrab, btnInventory;
     private Stage stage;
     private Drawable drawHome, drawTalk, drawRun, drawGrab, drawInventory;
-    Dialog inventoryD;
+    private boolean runPressed;
 
     public ActualGameButtons(){
 
@@ -70,6 +72,20 @@ public class ActualGameButtons {
 
         stage.addActor(table);
 
+        btnRun.addListener(new InputListener(){
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                runPressed = true;
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+               runPressed = false;
+            }
+        });
+
 
     }
 
@@ -94,5 +110,9 @@ public class ActualGameButtons {
 
     public ImageButton getBtnGrab() {
         return btnGrab;
+    }
+
+    public boolean isRunPressed() {
+        return runPressed;
     }
 }

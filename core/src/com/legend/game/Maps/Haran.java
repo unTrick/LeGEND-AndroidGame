@@ -17,6 +17,7 @@ import com.legend.game.BlenderObjects.RandomPersonTwo;
 import com.legend.game.Buttons.ActualGameButtons;
 import com.legend.game.Buttons.Controller;
 import com.legend.game.HUD.HUD;
+import com.legend.game.LeGENDGAME;
 import com.legend.game.States.GameMenu;
 import com.legend.game.States.GameState;
 import com.legend.game.States.GameStateManager;
@@ -25,7 +26,7 @@ import com.legend.game.States.GameStateManager;
  * Created by Patrick Sky on 2/25/2017.
  */
 
-public class Haran extends GameState {
+public class Haran extends GameState{
 
     private Stage stage;
 
@@ -46,8 +47,7 @@ public class Haran extends GameState {
         super(gsm);
 
 
-        mainCharacter = new MainCharacter();
-        randomPersonOne = new RandomPersonOne();
+        mainCharacter = new MainCharacter(LeGENDGAME.WIDTH / 2 , 500, LeGENDGAME.HEIGHT / 2);
         randomPersonTwo = new RandomPersonTwo();
 
         controller = new Controller();
@@ -92,22 +92,21 @@ public class Haran extends GameState {
     protected void handleInput() {
 
 
-
         if (controller.isLeftPressed()){
-            mainCharacter.walkLeft();
+            mainCharacter.walkLeft(1);
 //            walkLeft();
         }
         else if (controller.isRightPressed()){
-           mainCharacter.walkRight();
+           mainCharacter.walkRight(1);
 //            walkRight();
 
         }
         else if (controller.isUpPressed()){
-            mainCharacter.walkUp();
+            mainCharacter.walkUp(1);
 //            walkUp();
         }
         else if (controller.isDownPressed()){
-            mainCharacter.walkDown();
+            mainCharacter.walkDown(1);
 //            walkDown();
         }
 
@@ -118,13 +117,12 @@ public class Haran extends GameState {
     public void update(float dt) {
         handleInput();
 
-
         gameCam.update();
         renderer.setView(gameCam);
 
-        randomPersonTwo.update(dt);
-        randomPersonOne.update(dt);
-        mainCharacter.update();
+        randomPersonTwo.update();
+        randomPersonOne.update();
+        mainCharacter.update(dt);
         hud.update(dt);
 
     }

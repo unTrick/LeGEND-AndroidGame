@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -27,20 +28,28 @@ public class MainCharacter {
     OrthographicCamera camera;
     AssetManager assets;
     private ModelInstance inst;
+    private Vector3 position;
+    private Vector3 moving;
+
+    private static final float MOVE_SIX = 6f;
+    private static final float MOVE_THREE = 3f;
 
 
     Array<ModelInstance> instances = new Array<ModelInstance>();
 
-    public MainCharacter(){
+    public MainCharacter(float x, float y, float z){
 
         // Create ModelBatch that will render all models using a camera
         modelBatch = new ModelBatch();
+
+        position = new Vector3(x , y, z);
+        moving = new Vector3(0,0,0);
 
         // Create a camera and point it to our model
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.position.set(0f, 500f, 0f);
-        camera.lookAt(0,0,0);
+        camera.lookAt(0, 0, 0);
         camera.near = 0.1f;
         camera.far = 3000f;
         camera.zoom += 2f;
@@ -64,56 +73,41 @@ public class MainCharacter {
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -0.8f, -10f, -10f));
     }
 
-    public void update() {
+    public void update(float dt) {
 
-        if(Gdx.input.justTouched()){
-//            System.out.println("this is x" + camera.position); // 1557 XL, -1557 XR, 786 ZUP -660 zdown
-            //System.out.println(inst.transform.getRotation(new Quaternion()));
-        }
+        moving.scl(dt);
+        position.add(moving.x, 0, moving.z);
 
-        if(camera.position.x < -1557/2){
-            camera.position.x = -1557/2; // Right
-        }
 
-        if(camera.position.x > 1557/2){
-            camera.position.x = 1557/2; // Left
-        }
-
-        if(camera.position.z < -660/2){
-            camera.position.z = -660/2; // Down
-        }
-
-        if(camera.position.z > 786/2){
-            camera.position.z = 786/2; // Up
-        }
 
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
             inst.transform.setToRotation(-560 , 560 , -120,45); //front view
             inst.calculateTransforms();
-            walkDown();
+            walkDown(dt);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.UP)){
-            inst.transform.setToRotation(new Vector3(0 , -800 , -360),180); // right view
+            inst.transform.setToRotation(new Vector3(90 , 1200, -370),210); // back view
             inst.calculateTransforms();
-            walkUp();
+            walkUp(dt);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
             inst.transform.setToRotation(new Vector3(-500 , -300 , 90),45); // left view
             inst.calculateTransforms();
-            walkLeft();
+            walkLeft(dt);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-            inst.transform.setToRotation(new Vector3(500 , 300 , -90),90); // right view
+            inst.transform.setToRotation(new Vector3(-140, 1200, -380),150); // right view
             inst.calculateTransforms();
-            walkRight();
+            walkRight(dt);
         }
 
-        camera.update();
+        moving.scl(1/dt);
 
     }
+
 
 
     public void render() {
@@ -131,28 +125,88 @@ public class MainCharacter {
         assets.dispose();
     }
 
-    public void walkLeft(){
-        inst.transform.translate(3, 0, -2);
+    public void walkLeft(float dt){
+
+//        moving.x = 6;
+//        moving.z = -3;
+
+        position.x -= MOVE_SIX * dt;
+        position.z -= MOVE_THREE * dt;
+
         inst.transform.setToRotation(new Vector3(-500 , -300 , 90),45); // left view
         inst.calculateTransforms();
+//        camera.translate(6, 0, -3);
     }
 
-    public void walkRight(){
-        inst.transform.translate(-3, 0, 2);
+    public void walkRight(float dt){
+//        moving.x = -6;
+//        moving.z = 3;
+
+        position.x += MOVE_SIX * dt;
+        position.z += MOVE_THREE * dt;
+
+        inst.transform.setToRotation(new Vector3(-140, 1200, -380),150); // right view
+        inst.calculateTransforms();
+//        camera.translate(-6, 0, 3);
     }
 
-    public void walkUp(){
-        inst.transform.translate(3, 0, 2);
+    public void walkUp(float dt){
+//        moving.x = 6;
+//        moving.z = 3;
+
+        position.x -= MOVE_SIX * dt;
+        position.z += MOVE_THREE * dt;
+
+        inst.transform.setToRotation(new Vector3(90 , 1200, -370),210); // back view
+        inst.calculateTransforms();
+//        camera.translate(6, 0, 3);
     }
 
-    public void walkDown(){
+    public void walkDown(float dt){
+//        moving.x = -6;
+//        moving.z = -3;
+
+        position.x += MOVE_SIX * dt;
+        position.z -= MOVE_THREE * dt;
+
         inst.transform.setToRotation(-560 , 560 , -120,45); //front view
         inst.calculateTransforms();
-        inst.transform.translate(-3, 0, -2);
+//        camera.translate(-6, 0, -3);
+
+    }
+
+
+    public void walkLeftSpeed(){
+        camera.translate(12, 0, -6);
+        inst.transform.setToRotation(new Vector3(-500 , -300 , 90),45); // left view
+        inst.calculateTransforms();
+
+    }
+
+    public void walkRightSpeed(){
+        camera.translate(-12, 0, 6);
+    }
+
+    public void walkUpSpeed(){
+        camera.translate(12, 0, 6);
+    }
+
+    public void walkDownSpeed(){
+        inst.transform.setToRotation(-560 , 560 , -120,45); //front view
+        inst.calculateTransforms();
+        camera.translate(-12, 0, -6);
     }
 
 
     public OrthographicCamera getCamera() {
         return camera;
+    }
+
+    public Vector3 getMoving() {
+        return moving;
+    }
+
+    public Vector3 getPosition() {
+        return position;
     }
 }
