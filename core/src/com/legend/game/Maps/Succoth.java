@@ -39,7 +39,8 @@ public class Succoth extends GameState{
     public Succoth(GameStateManager gsm){
         super(gsm);
 
-        mainCharacter = new MainCharacter(LeGENDGAME.WIDTH / 2 , 500, LeGENDGAME.HEIGHT / 2);
+//        mainCharacter = new MainCharacter(map);
+        mainCharacter = new MainCharacter(400, 0, 100);
         controller = new Controller();
         hud = new HUD();
         actualGameButtons = new ActualGameButtons();
@@ -108,9 +109,8 @@ public class Succoth extends GameState{
         gameCam.update();
         renderer.setView(gameCam);
 
-        mainCharacter.update(dt);
         hud.getMapName().setText("Succoth");
-        hud.update(dt);
+        hud.updated(dt);
     }
 
     @Override

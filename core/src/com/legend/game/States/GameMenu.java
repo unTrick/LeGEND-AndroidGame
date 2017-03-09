@@ -2,11 +2,14 @@ package com.legend.game.States;
 
         import com.badlogic.gdx.Gdx;
         import com.badlogic.gdx.audio.Sound;
+        import com.badlogic.gdx.graphics.GL20;
         import com.badlogic.gdx.graphics.Texture;
         import com.badlogic.gdx.graphics.g2d.SpriteBatch;
         import com.badlogic.gdx.graphics.g2d.TextureRegion;
         import com.badlogic.gdx.scenes.scene2d.InputEvent;
         import com.badlogic.gdx.scenes.scene2d.Stage;
+        import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+        import com.badlogic.gdx.scenes.scene2d.ui.Image;
         import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
         import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
         import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -26,6 +29,7 @@ public class GameMenu extends GameState{
     private Texture background, start, load, setting, help, book, exit;
     private Sound clickSound;
     private Stage stage;
+    private Image bg;
     //private ImageButton btnStart, btnLoad, btnSetting, btnHelp, btnBook;
 
 
@@ -37,6 +41,9 @@ public class GameMenu extends GameState{
         new Timer().stop();
 
         Gdx.input.setInputProcessor(stage);
+
+        bg = new Image(background);
+        stage.addActor(bg);
 
         start = new Texture("start.png");
         Drawable drawStart = new TextureRegionDrawable(new TextureRegion(start));
@@ -100,8 +107,13 @@ public class GameMenu extends GameState{
 
         btnBook.addListener(new ClickListener(){
             @Override
-            public void touchUp(InputEvent e, float x, float y, int point, int button){
-                gsm.set(new BibleBook(gsm));
+            public void clicked(InputEvent e, float x, float y){
+                stage.addAction(Actions.sequence(Actions.moveBy(0, -stage.getHeight(), 0.2f), Actions.run(new Runnable() {
+                    @Override
+                    public void run() {
+                            gsm.set(new BibleBook(gsm));
+                    }
+                })));
             }
         });
 
@@ -143,9 +155,8 @@ public class GameMenu extends GameState{
 
     @Override
     public void render(SpriteBatch sb) {
-        sb.begin();
-        sb.draw(background, 0, 0);
-        sb.end();
+        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
     }

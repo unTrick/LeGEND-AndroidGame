@@ -115,4 +115,8 @@ public class ActualGameButtons {
     public boolean isRunPressed() {
         return runPressed;
     }
+
+    public ImageButton getBtnInventory() {
+        return btnInventory;
+    }
 }

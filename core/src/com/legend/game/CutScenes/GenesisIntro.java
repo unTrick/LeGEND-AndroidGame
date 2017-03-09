@@ -216,7 +216,7 @@ public class GenesisIntro extends GameState{
         btnSkips.setPosition(stage.getWidth() - ((stage.getWidth() / 6) + btnSkips.getWidth()), stage.getHeight() / 8);
         btnSkips.addListener(new ClickListener(){
             @Override
-            public void touchUp(InputEvent e, float x, float y, int point, int button){
+            public boolean touchDown(InputEvent e, float x, float y, int point, int button){
                 btnConts.remove();
                 frontIntro.remove();
                 firstCS.remove();
@@ -230,6 +230,8 @@ public class GenesisIntro extends GameState{
                 btnMenus.remove();
                 storyMusic.dispose();
                 gsm.set(new AbrahamHouse(gsm));
+
+                return false;
             }
         });
 

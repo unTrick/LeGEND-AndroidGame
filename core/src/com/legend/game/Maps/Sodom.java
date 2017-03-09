@@ -40,7 +40,8 @@ public class Sodom extends GameState {
     public Sodom(GameStateManager gsm){
         super(gsm);
 
-        mainCharacter = new MainCharacter(LeGENDGAME.WIDTH / 2 , 500, LeGENDGAME.HEIGHT / 2);
+//        mainCharacter = new MainCharacter(map);
+        mainCharacter = new MainCharacter(200, 0, 200);
         controller = new Controller();
         hud = new HUD();
         actualGameButtons = new ActualGameButtons();
@@ -109,9 +110,8 @@ public class Sodom extends GameState {
         gameCam.update();
         renderer.setView(gameCam);
 
-        mainCharacter.update(dt);
         hud.getMapName().setText("Sodom");
-        hud.update(dt);
+        hud.updated(dt);
     }
 
     @Override

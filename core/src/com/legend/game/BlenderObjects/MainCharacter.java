@@ -12,14 +12,17 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.legend.game.Entity.Entity;
 
 /**
  * Created by Patrick Sky on 2/26/2017.
  */
 
+//public class MainCharacter extends Entity {
 public class MainCharacter {
 
 
@@ -37,8 +40,12 @@ public class MainCharacter {
 
     Array<ModelInstance> instances = new Array<ModelInstance>();
 
+//    public MainCharacter(Tiledmap map){
     public MainCharacter(float x, float y, float z){
-
+//        super(map);
+//        width = 64;
+//        height = 32;
+//        moveSpeed = 5;
         // Create ModelBatch that will render all models using a camera
         modelBatch = new ModelBatch();
 
@@ -59,8 +66,6 @@ public class MainCharacter {
         assets.load("abraham.g3db", Model.class);
         assets.finishLoading();
 
-
-
         // Create an instance of our crate model and put it in an array
         Model model = assets.get("abraham.g3db", Model.class);
         inst = new ModelInstance(model);
@@ -73,46 +78,10 @@ public class MainCharacter {
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -0.8f, -10f, -10f));
     }
 
-    public void update(float dt) {
-
-        moving.scl(dt);
-        position.add(moving.x, 0, moving.z);
-
-
-
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-            inst.transform.setToRotation(-560 , 560 , -120,45); //front view
-            inst.calculateTransforms();
-            walkDown(dt);
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)){
-            inst.transform.setToRotation(new Vector3(90 , 1200, -370),210); // back view
-            inst.calculateTransforms();
-            walkUp(dt);
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            inst.transform.setToRotation(new Vector3(-500 , -300 , 90),45); // left view
-            inst.calculateTransforms();
-            walkLeft(dt);
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-            inst.transform.setToRotation(new Vector3(-140, 1200, -380),150); // right view
-            inst.calculateTransforms();
-            walkRight(dt);
-        }
-
-        moving.scl(1/dt);
-
-    }
 
 
 
     public void render() {
-
-
 
         modelBatch.begin(camera);
         modelBatch.render(instances, environment);
@@ -127,76 +96,93 @@ public class MainCharacter {
 
     public void walkLeft(float dt){
 
-//        moving.x = 6;
-//        moving.z = -3;
-
         position.x -= MOVE_SIX * dt;
         position.z -= MOVE_THREE * dt;
 
         inst.transform.setToRotation(new Vector3(-500 , -300 , 90),45); // left view
         inst.calculateTransforms();
-//        camera.translate(6, 0, -3);
     }
 
     public void walkRight(float dt){
-//        moving.x = -6;
-//        moving.z = 3;
-
         position.x += MOVE_SIX * dt;
         position.z += MOVE_THREE * dt;
 
         inst.transform.setToRotation(new Vector3(-140, 1200, -380),150); // right view
         inst.calculateTransforms();
-//        camera.translate(-6, 0, 3);
     }
 
     public void walkUp(float dt){
-//        moving.x = 6;
-//        moving.z = 3;
 
         position.x -= MOVE_SIX * dt;
         position.z += MOVE_THREE * dt;
 
         inst.transform.setToRotation(new Vector3(90 , 1200, -370),210); // back view
         inst.calculateTransforms();
-//        camera.translate(6, 0, 3);
     }
 
     public void walkDown(float dt){
-//        moving.x = -6;
-//        moving.z = -3;
 
         position.x += MOVE_SIX * dt;
         position.z -= MOVE_THREE * dt;
 
         inst.transform.setToRotation(-560 , 560 , -120,45); //front view
         inst.calculateTransforms();
-//        camera.translate(-6, 0, -3);
 
     }
+//    @Override
+    public void updateEntity(float dt) {
+//        super.updateEntity(dt);
+//        if (right) {
+//            position.x += MOVE_SIX * dt;
+//            position.z += MOVE_THREE * dt;
+//            inst.transform.setToRotation(new Vector3(-140, 1200, -380),150); // right view
+//            inst.calculateTransforms();
+//        }
+//        if (down) {
+//            position.x += MOVE_SIX * dt;
+//            position.z -= MOVE_THREE * dt;
+//            inst.transform.setToRotation(-560 , 560 , -120,45); //front view
+//            inst.calculateTransforms();
+//        }
+//        if (up) {
+//            position.x -= MOVE_SIX * dt;
+//            position.z += MOVE_THREE * dt;
+//            inst.transform.setToRotation(new Vector3(90 , 1200, -370),210); // back view
+//            inst.calculateTransforms();
+//        }
+//        if (left) {
+//            position.x -= MOVE_SIX * dt;
+//            position.z -= MOVE_THREE * dt;
+//            inst.transform.setToRotation(new Vector3(-500 , -300 , 90),45); // left view
+//            inst.calculateTransforms();
+//        }
 
 
-    public void walkLeftSpeed(){
-        camera.translate(12, 0, -6);
-        inst.transform.setToRotation(new Vector3(-500 , -300 , 90),45); // left view
-        inst.calculateTransforms();
+        moving.scl(dt);
+        position.add(moving.x, 0, moving.z);
 
+        moving.scl(1/dt);
     }
-
-    public void walkRightSpeed(){
-        camera.translate(-12, 0, 6);
-    }
-
-    public void walkUpSpeed(){
-        camera.translate(12, 0, 6);
-    }
-
-    public void walkDownSpeed(){
-        inst.transform.setToRotation(-560 , 560 , -120,45); //front view
-        inst.calculateTransforms();
-        camera.translate(-12, 0, -6);
-    }
-
+//
+//    @Override
+//    public void setUp() {
+//        super.setUp();
+//    }
+//
+//    @Override
+//    public void setDown() {
+//        super.setDown();
+//    }
+//
+//    @Override
+//    public void setLeft() {
+//        super.setLeft();
+//    }
+//
+//    @Override
+//    public void setRight() {
+//        super.setRight();
+//    }
 
     public OrthographicCamera getCamera() {
         return camera;

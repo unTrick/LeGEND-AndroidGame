@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.legend.game.LoadMaps.LoadExodus;
 import com.legend.game.States.GameState;
 import com.legend.game.States.GameStateManager;
 
@@ -28,7 +29,7 @@ public class ExodusIntro extends GameState {
 
     int click = 0;
 
-    public ExodusIntro(GameStateManager gsm) {
+    public ExodusIntro(final GameStateManager gsm) {
         super(gsm);
 
         stage = new Stage(gameView);
@@ -56,6 +57,9 @@ public class ExodusIntro extends GameState {
                 }
                 if (click == 3) {
                     story.setPosition(-stage.getWidth() + (-stage.getWidth() / 2), -stage.getHeight() / 12); // last
+                }
+                if (click == 4) {
+                    gsm.set(new LoadExodus(gsm));
                 }
 
 

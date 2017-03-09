@@ -40,7 +40,8 @@ public class Negeb extends GameState {
     public Negeb(GameStateManager gsm){
         super(gsm);
 
-        mainCharacter = new MainCharacter(LeGENDGAME.WIDTH / 2 , 500, LeGENDGAME.HEIGHT / 2);
+//        mainCharacter = new MainCharacter(map);
+        mainCharacter = new MainCharacter(200, 0, 200);
         controller = new Controller();
         hud = new HUD();
         actualGameButtons = new ActualGameButtons();
@@ -109,8 +110,7 @@ public class Negeb extends GameState {
         gameCam.update();
         renderer.setView(gameCam);
 
-        mainCharacter.update(dt);
-        hud.update(dt);
+        hud.updated(dt);
     }
 
     @Override

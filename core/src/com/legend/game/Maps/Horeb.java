@@ -39,7 +39,8 @@ public class Horeb extends GameState{
     public Horeb(GameStateManager gsm){
         super(gsm);
 
-        mainCharacter = new MainCharacter(LeGENDGAME.WIDTH / 2 , 500, LeGENDGAME.HEIGHT / 2);
+//        mainCharacter = new MainCharacter(map);
+        mainCharacter = new MainCharacter(200, 0, 200);
         controller = new Controller();
         hud = new HUD();
         actualGameButtons = new ActualGameButtons();
@@ -108,9 +109,8 @@ public class Horeb extends GameState{
         gameCam.update();
         renderer.setView(gameCam);
 
-        mainCharacter.update(dt);
         hud.getMapName().setText("horeb");
-        hud.update(dt);
+        hud.updated(dt);
     }
 
     @Override

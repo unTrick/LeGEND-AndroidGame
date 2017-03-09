@@ -18,6 +18,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.legend.game.LeGENDGAME;
+import com.legend.game.States.GameMenu;
+import com.legend.game.States.GameState;
+import com.legend.game.States.GameStateManager;
 
 /**
  * Created by Patrick Sky on 2/24/2017.
@@ -94,7 +97,8 @@ public class HUD {
         stage.addActor(table);
     }
 
-    public void update(float dt){
+    public void updated(float dt){
+
 
         timeCountHour += dt;
         if(timeCountHour > 59){
@@ -142,5 +146,13 @@ public class HUD {
 
     public Label getMapName() {
         return mapName;
+    }
+
+    public Integer getMinuteTimer() {
+        return minuteTimer;
+    }
+
+    public Integer getHourTimer() {
+        return hourTimer;
     }
 }

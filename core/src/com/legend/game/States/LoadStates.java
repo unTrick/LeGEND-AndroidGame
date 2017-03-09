@@ -30,9 +30,6 @@ public class LoadStates extends GameState {
     private Image background;
     private Texture backTxr, gen, exo, levi, numb, deu;
 
-
-
-
     public LoadStates (final GameStateManager gsm){
         super(gsm);
 
@@ -42,11 +39,11 @@ public class LoadStates extends GameState {
         Gdx.input.setInputProcessor(stage);
 
         backTxr = new Texture("back.png");
-        gen = new Texture("genesisIcon.png");
-        exo = new Texture("exodusIcon.png");
-        levi = new Texture("leviticusIcon.png");
-        numb = new Texture("numbersIcon.png");
-        deu = new Texture("deuteronomyIcon.png");
+        gen = new Texture("book/genesisIcon.png");
+        exo = new Texture("book/exodusIcon.png");
+        levi = new Texture("book/leviticusIcon.png");
+        numb = new Texture("book/numbersIcon.png");
+        deu = new Texture("book/deuteronomyIcon.png");
 
         Drawable backDraw = new TextureRegionDrawable(new TextureRegion(backTxr));
         Drawable genDraw = new TextureRegionDrawable(new TextureRegion(gen));
@@ -70,11 +67,11 @@ public class LoadStates extends GameState {
 
 
         btnBack.setPosition(stage.getWidth() - (stage.getWidth() / 8), stage.getHeight() / 8);
-        btnGen.setPosition((stage.getWidth() / 2) - (stage.getWidth() / 4), (stage.getHeight() /2) - (gen.getHeight() / 2));
-        btnExo.setPosition((stage.getWidth() / 2) - (stage.getWidth() / 8), (stage.getHeight() /2) - (exo.getHeight() / 2));
-        btnLevi.setPosition(stage.getWidth() / 2, (stage.getHeight() /2) - (levi.getHeight() / 2));
-        btnNumb.setPosition((stage.getWidth() / 2) + (stage.getWidth() / 8), (stage.getHeight() /2) - (numb.getHeight() / 2));
-        btnDeu.setPosition(stage.getWidth() - (stage.getWidth() / 4), (stage.getHeight() /2) - (deu.getHeight() / 2));
+        btnGen.setPosition((stage.getWidth() / 2) - (stage.getWidth() / 4), (stage.getHeight() /2) - (gen.getHeight() / 4));
+        btnExo.setPosition((stage.getWidth() / 2) - (stage.getWidth() / 8), (stage.getHeight() /2) - (exo.getHeight() / 4));
+        btnLevi.setPosition(stage.getWidth() / 2, (stage.getHeight() /2) - (levi.getHeight() / 4));
+        btnNumb.setPosition((stage.getWidth() / 2) + (stage.getWidth() / 8), (stage.getHeight() /2) - (numb.getHeight() / 4));
+        btnDeu.setPosition(stage.getWidth() - (stage.getWidth() / 4), (stage.getHeight() /2) - (deu.getHeight() / 4));
 
         btnBack.addListener(new ClickListener(){
             @Override

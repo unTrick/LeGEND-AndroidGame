@@ -13,18 +13,18 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.legend.game.LeGENDGAME;
+import com.legend.game.Screen.GameScreen;
 
 /**
  * Created by Patrick Sky on 2/27/2017.
  */
 
-public class RandomPersonOne{
+public class RandomPersonOne extends GameScreen{
 
     Environment environment;
     AssetManager assets;
     private ModelInstance inst;
     ModelBatch mbatch;
-    private OrthographicCamera modelCam;
     private Vector3 position;
 
 
@@ -33,19 +33,19 @@ public class RandomPersonOne{
     public RandomPersonOne(float x, float y, float z){
 
         position = new Vector3(x, y, z);
-        modelCam = new OrthographicCamera();
-        modelCam.setToOrtho(false, LeGENDGAME.WIDTH, LeGENDGAME.HEIGHT);
+        screenCamera = new OrthographicCamera();
+        screenCamera.setToOrtho(false, LeGENDGAME.WIDTH, LeGENDGAME.HEIGHT);
 
         // Create ModelBatch that will render all models using a camera
         mbatch = new ModelBatch();
         // Create a camera and point it to our model
 
-        modelCam.position.set(0f, 500f, 0f);
-        modelCam.lookAt(0,0,0);
-        modelCam.near = 0.1f;
-        modelCam.far = 3000f;
-        modelCam.zoom += 2f;
-        modelCam.update();
+        screenCamera.position.set(0f, 500f, 0f);
+        screenCamera.lookAt(0,0,0);
+        screenCamera.near = 0.1f;
+        screenCamera.far = 3000f;
+        screenCamera.zoom += 2f;
+        screenCamera.update();
 
         assets = new AssetManager();
         assets.load("extraOne.g3db", Model.class);
@@ -67,13 +67,13 @@ public class RandomPersonOne{
     }
 
     public void update() {
-        modelCam.position.x = position.x;
-        modelCam.position.z = position.z;
-        modelCam.update();
+
+        screenCamera.position.x = position.x;
+        screenCamera.position.y = position.z;
     }
 
     public void render() {
-        mbatch.begin(modelCam);
+        mbatch.begin(screenCamera);
         mbatch.render(instances, environment);
         mbatch.end();
     }
@@ -84,7 +84,7 @@ public class RandomPersonOne{
         assets.dispose();
     }
 
-    public OrthographicCamera getModelCam() {
-        return modelCam;
+    public Vector3 getPosition() {
+        return position;
     }
 }
