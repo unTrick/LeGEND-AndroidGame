@@ -33,17 +33,17 @@ public class LoadStates extends GameState {
     public LoadStates (final GameStateManager gsm){
         super(gsm);
 
-        stage = new Stage(new StretchViewport(1280, 720));
+        stage = new Stage(gameView);
         background = new Image(new Texture("GameMenuBG.jpg"));
         stage.addActor(background);
         Gdx.input.setInputProcessor(stage);
 
         backTxr = new Texture("back.png");
-        gen = new Texture("book/genesisIcon.png");
-        exo = new Texture("book/exodusIcon.png");
-        levi = new Texture("book/leviticusIcon.png");
-        numb = new Texture("book/numbersIcon.png");
-        deu = new Texture("book/deuteronomyIcon.png");
+        gen = new Texture("Book/genesisIcon.png");
+        exo = new Texture("Book/exodusIcon.png");
+        levi = new Texture("Book/leviticusIcon.png");
+        numb = new Texture("Book/numbersIcon.png");
+        deu = new Texture("Book/deuteronomyIcon.png");
 
         Drawable backDraw = new TextureRegionDrawable(new TextureRegion(backTxr));
         Drawable genDraw = new TextureRegionDrawable(new TextureRegion(gen));
@@ -103,7 +103,6 @@ public class LoadStates extends GameState {
         btnLevi.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent e, float x, float y, int point, int button){
-//                gsm.set(new LoadLeviticus(gsm));
                 gsm.set(new LeviticusIntro(gsm));
                 dispose();
                 return false;

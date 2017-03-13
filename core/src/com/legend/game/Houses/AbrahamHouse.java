@@ -20,7 +20,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.legend.game.BlenderObjects.MainCharacter;
-import com.legend.game.BlenderObjects.RandomPersonOne;
 import com.legend.game.Buttons.ActualGameButtons;
 import com.legend.game.Buttons.Controller;
 import com.legend.game.HUD.HUD;

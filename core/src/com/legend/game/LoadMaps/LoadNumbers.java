@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.legend.game.Buttons.ActualGameButtons;
+import com.legend.game.Buttons.BackButton;
 import com.legend.game.Buttons.Controller;
 import com.legend.game.States.GameMenu;
 import com.legend.game.States.GameState;
@@ -37,45 +38,37 @@ public class LoadNumbers extends GameState {
     private TiledMap map; // the map itself
     private IsometricTiledMapRenderer renderer; // it renders the map into the screen
 
-    private Texture backTxr;
-
-    private ActualGameButtons actualGameButtons;
+    private BackButton backButton;
 
     public LoadNumbers(final GameStateManager gsm) {
         super(gsm);
 
         stage = new Stage(gameView);
-        actualGameButtons = new ActualGameButtons();
-        Gdx.input.setInputProcessor(actualGameButtons.getStage());
+        backButton = new BackButton();
+
+        Gdx.input.setInputProcessor(backButton.getStage());
+
 
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("tiledmaps/Numbers.tmx");
-        renderer = new IsometricTiledMapRenderer(map, 0.5f);
-        gameCam.position.set(4712.667f,-141,0);
+        renderer = new IsometricTiledMapRenderer(map, 0.6f);
+        gameCam.position.set(1546,-21,0);
 
-        backTxr = new Texture("back.png");
-        Drawable backDraw = new TextureRegionDrawable(new TextureRegion(backTxr));
-        ImageButton btnBack = new ImageButton(backDraw);
-        btnBack.setPosition(stage.getWidth() - (stage.getWidth() / 8), stage.getHeight() / 8);
+        backButton.getStage().addActor(backButton.getTable());
 
-        btnBack.addListener(new ClickListener(){
+        backButton.getBtnBack().addListener(new ClickListener(){
+
             @Override
-            public void touchUp(InputEvent e, float x, float y, int point, int button){
-                gsm.set(new GameMenu(gsm));
-            }
-        });
+            public boolean touchDown(InputEvent event, float x, float y, int point, int button){
 
-        actualGameButtons.getBtnHome().addListener(new ClickListener(){
-            @Override
-            public boolean touchDown(InputEvent e, float x, float y, int point, int button){
                 gsm.set(new LoadStates(gsm));
-                dispose();
-                return false;
+
+                return true;
             }
+
         });
 
-        stage.addActor(btnBack);
-        actualGameButtons.getStage().addActor(actualGameButtons.getBtnHome());
+
 
     }
 
@@ -118,10 +111,10 @@ public class LoadNumbers extends GameState {
 
         stage.act();
         stage.draw();
-        actualGameButtons.getStage().draw();
 
 //        mainCharacter.render();
 //        controller.render();
+        backButton.getStage().draw();
 
     }
 

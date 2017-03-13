@@ -29,7 +29,7 @@ public class Controller{
 
     public Controller(){
 
-        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera = new OrthographicCamera();
         camera.setToOrtho(false,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage = new Stage();
         camera.position.set(0f, 0f, 1f);

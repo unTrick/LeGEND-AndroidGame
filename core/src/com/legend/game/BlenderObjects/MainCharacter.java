@@ -1,22 +1,16 @@
 package com.legend.game.BlenderObjects;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-import com.legend.game.Entity.Entity;
 
 /**
  * Created by Patrick Sky on 2/26/2017.
@@ -24,12 +18,13 @@ import com.legend.game.Entity.Entity;
 
 //public class MainCharacter extends Entity {
 public class MainCharacter {
-
+    OrthographicCamera camera;
 
     ModelBatch modelBatch;
     Environment environment;
-    OrthographicCamera camera;
+
     AssetManager assets;
+
     private ModelInstance inst;
     private Vector3 position;
     private Vector3 moving;
@@ -40,13 +35,7 @@ public class MainCharacter {
 
     Array<ModelInstance> instances = new Array<ModelInstance>();
 
-//    public MainCharacter(Tiledmap map){
     public MainCharacter(float x, float y, float z){
-//        super(map);
-//        width = 64;
-//        height = 32;
-//        moveSpeed = 5;
-        // Create ModelBatch that will render all models using a camera
         modelBatch = new ModelBatch();
 
         position = new Vector3(x , y, z);
@@ -162,6 +151,7 @@ public class MainCharacter {
         position.add(moving.x, 0, moving.z);
 
         moving.scl(1/dt);
+        camera.update();
     }
 //
 //    @Override

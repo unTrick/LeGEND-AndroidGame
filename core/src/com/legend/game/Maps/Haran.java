@@ -2,22 +2,29 @@ package com.legend.game.Maps;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
+import com.badlogic.gdx.math.Quaternion;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
+import com.legend.game.BlenderObjects.Extra;
 import com.legend.game.BlenderObjects.MainCharacter;
-import com.legend.game.BlenderObjects.RandomPersonOne;
-import com.legend.game.BlenderObjects.RandomPersonTwo;
 import com.legend.game.Buttons.ActualGameButtons;
 import com.legend.game.Buttons.Controller;
 import com.legend.game.HUD.HUD;
-import com.legend.game.LeGENDGAME;
 import com.legend.game.PopupBox.Inventory;
 import com.legend.game.Screen.GameScreen;
 import com.legend.game.States.GameMenu;
@@ -33,6 +40,7 @@ public class Haran extends GameState {
     private Stage stage;
 
     private MainCharacter mainCharacter;
+    private Extra extra;
 
     private HUD hud;
     private Controller controller;
@@ -45,12 +53,14 @@ public class Haran extends GameState {
 
     private GameScreen gameScreen;
 
+    ModelBatch modelBatch;
+
     public Haran(final GameStateManager gsm){
         super(gsm);
+        modelBatch = new ModelBatch();
 
-
-//        mainCharacter = new MainCharacter(map);
         mainCharacter = new MainCharacter(628, 0, 156);
+        extra = new Extra();
 
         gameScreen = new GameScreen();
 
@@ -111,6 +121,17 @@ public class Haran extends GameState {
         });
 
 
+        extra.getAssets().load("abraham.g3db", Model.class);
+        extra.getAssets().finishLoading();
+
+
+
+        // Set up environment with simple lighting
+
+        extra.getEnvironment().set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
+        extra.getEnvironment().add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -0.8f, -10f, -10f));
+
+
     }
 
 
@@ -125,7 +146,6 @@ public class Haran extends GameState {
             }
             else {
                 mainCharacter.walkLeft(1);
-//                mainCharacter.setLeft();
                 System.out.println(gameCam.position);
             }
 
@@ -136,7 +156,6 @@ public class Haran extends GameState {
             }
             else {
                 mainCharacter.walkRight(1);
-//                mainCharacter.setRight();
                 System.out.println(gameCam.position);
             }
 
@@ -147,7 +166,6 @@ public class Haran extends GameState {
             }
             else {
                 mainCharacter.walkUp(1);
-//                mainCharacter.setUp();
                 System.out.println(gameCam.position);
             }
 
@@ -158,7 +176,6 @@ public class Haran extends GameState {
             }
             else {
                 mainCharacter.walkDown(1);
-//                mainCharacter.setDown();
                 System.out.println(gameCam.position);
             }
 
@@ -193,6 +210,10 @@ public class Haran extends GameState {
         stage.draw();
 
         mainCharacter.render();
+
+        modelBatch.begin(extra.getCamera());
+        modelBatch.render(extra.getInstances(), extra.getEnvironment());
+        modelBatch.end();
 
         controller.render();
         actualGameButtons.getStage().draw();

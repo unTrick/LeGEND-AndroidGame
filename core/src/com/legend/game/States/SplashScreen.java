@@ -20,7 +20,6 @@ import javafx.stage.Screen;
 public class SplashScreen extends GameState {
 
     private Texture splashBackground;
-    private OrthographicCamera cam;
     private boolean timerIsOn = false;
     private Stage stage;
     private Image bg;
@@ -28,9 +27,7 @@ public class SplashScreen extends GameState {
     private Music splashSound;
     public SplashScreen(GameStateManager gsm) {
         super(gsm);
-        cam = new OrthographicCamera();
-        cam.setToOrtho(false, LeGENDGAME.WIDTH, LeGENDGAME.HEIGHT);
-        stage = new Stage();
+        stage = new Stage(gameView);
         splashBackground = new Texture("DevocatLogo.png");
         splashSound = Gdx.audio.newMusic(Gdx.files.internal("splash screen.MP3"));
         splashSound.setLooping(true);

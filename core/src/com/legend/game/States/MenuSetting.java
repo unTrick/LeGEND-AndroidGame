@@ -25,7 +25,7 @@ public class MenuSetting extends GameState {
 
     public MenuSetting(final GameStateManager gsm){
         super(gsm);
-        stage = new Stage(new StretchViewport(1280, 720));
+        stage = new Stage(gameView);
         turnOff = new Texture("MusicTOff.png");
         turnOn = new Texture("MusicTO.png");
         menu = new Texture("back.png");

@@ -1,24 +1,22 @@
 package com.legend.game.States;
 
-        import com.badlogic.gdx.Gdx;
-        import com.badlogic.gdx.audio.Sound;
-        import com.badlogic.gdx.graphics.GL20;
-        import com.badlogic.gdx.graphics.Texture;
-        import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-        import com.badlogic.gdx.graphics.g2d.TextureRegion;
-        import com.badlogic.gdx.scenes.scene2d.InputEvent;
-        import com.badlogic.gdx.scenes.scene2d.Stage;
-        import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-        import com.badlogic.gdx.scenes.scene2d.ui.Image;
-        import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-        import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-        import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-        import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-        import com.badlogic.gdx.utils.Timer;
-        import com.badlogic.gdx.utils.viewport.StretchViewport;
-        import com.legend.game.CutScenes.GenesisIntro;
-        import com.legend.game.LeGENDGAME;
-        import com.legend.game.Maps.Haran;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.legend.game.CutScenes.GenesisIntro;
+import com.legend.game.LeGENDGAME;
 
 /**
  * Created by Patrick Sky on 11/26/2016.
@@ -108,12 +106,7 @@ public class GameMenu extends GameState{
         btnBook.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent e, float x, float y){
-                stage.addAction(Actions.sequence(Actions.moveBy(0, -stage.getHeight(), 0.2f), Actions.run(new Runnable() {
-                    @Override
-                    public void run() {
-                            gsm.set(new BibleBook(gsm));
-                    }
-                })));
+                gsm.set(new BibleBook(gsm));
             }
         });
 

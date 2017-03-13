@@ -1,24 +1,27 @@
 package com.legend.game.States;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ai.steer.behaviors.Alignment;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.legend.game.Buttons.SimpleDirectionGestureDetector;
 
-import javax.swing.GroupLayout;
 
 /**
  * Created by Patrick Sky on 3/2/2017.
@@ -31,10 +34,14 @@ public class GameHelp extends GameState{
     Label lblBtnTitle, lblInstruct, txt1stTitle , txt2ndTitle, txt3rdTitle, txt4thTitle, txtInsContent;
     Label txt1stContent, txt2ndContent, txt3rdContent, txt4thContent;
 
-    public GameHelp(GameStateManager gsm){
+    TextButton back;
+
+    public GameHelp(final GameStateManager gsm){
         super(gsm);
 
         stage = new Stage(gameView);
+
+
 
         FileHandle fontFile = Gdx.files.internal("font/Candarab.ttf");
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
@@ -45,6 +52,12 @@ public class GameHelp extends GameState{
         FreeTypeFontGenerator.FreeTypeFontParameter titleParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         titleParameter.size = 35;
         titleHead = generator.generateFont(titleParameter);
+
+        Drawable down = new TextureRegionDrawable(new TextureRegion(new Texture("skin/downDrawable.png")));
+        Drawable up = new TextureRegionDrawable(new TextureRegion(new Texture("skin/upDrawable.png")));
+        Drawable checked = new TextureRegionDrawable(new TextureRegion(new Texture("skin/checkedDraw.png")));
+
+        back = new TextButton("Back", new TextButton.TextButtonStyle(up,down,checked,contentText));
 
         Table table = new Table();
         table.top().left().padTop(20);
@@ -138,10 +151,12 @@ public class GameHelp extends GameState{
         table.add(txt4thTitle).pad(10,50,0,0).left();
         table.row();
         table.add(txt4thContent).pad(10,70,0,0).left();
+        table.row();
+        table.add(back).right().width(150).height(75);
 
         stage.addActor(table);
 
-        Gdx.input.setInputProcessor(new SimpleDirectionGestureDetector(new SimpleDirectionGestureDetector.DirectionListener() {
+        Gdx.input.setInputProcessor(new InputMultiplexer(stage, new SimpleDirectionGestureDetector(new SimpleDirectionGestureDetector.DirectionListener() {
             @Override
             public void onLeft() {
 
@@ -172,7 +187,16 @@ public class GameHelp extends GameState{
                     gameCam.translate(0, 20,0);
                 }
             }
-        }));
+        })));
+
+        back.addListener(new ClickListener(){
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int point, int button){
+                gsm.set(new GameMenu(gsm));
+            }
+
+        });
 
 
     }

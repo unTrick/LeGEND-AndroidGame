@@ -2,21 +2,30 @@ package com.legend.game.LoadMaps;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.legend.game.BlenderObjects.MainCharacter;
 import com.legend.game.Buttons.ActualGameButtons;
+import com.legend.game.Buttons.BackButton;
 import com.legend.game.Buttons.Controller;
+import com.legend.game.Buttons.GenesisPortal;
 import com.legend.game.States.GameMenu;
 import com.legend.game.States.GameState;
 import com.legend.game.States.GameStateManager;
@@ -29,54 +38,53 @@ import com.legend.game.States.LoadStates;
 public class LoadGenesis extends GameState {
     private Stage stage;
 
-//    private MainCharacter mainCharacter;
-//    private Controller controller;
+    private MainCharacter mainCharacter;
+    private Controller controller;
 
     private TmxMapLoader mapLoader;//load the map into the game
     private TiledMap map; // the map itself
     private IsometricTiledMapRenderer renderer; // it renders the map into the screen
 
-    private Texture backTxr;
-
-    private ActualGameButtons actualGameButtons;
+    private BackButton backButton;
+    private GenesisPortal genesisPortal;
 
     public LoadGenesis(final GameStateManager gsm) {
         super(gsm);
 
         stage = new Stage(gameView);
-        actualGameButtons = new ActualGameButtons();
-        Gdx.input.setInputProcessor(actualGameButtons.getStage());
+        backButton = new BackButton();
+        genesisPortal = new GenesisPortal();
+
+        controller = new Controller();
+        mainCharacter = new MainCharacter(1, 0, 0);
+        mainCharacter.getCamera().zoom  += 2f;
+
+
+        Gdx.input.setInputProcessor(new InputMultiplexer(backButton.getStage(), genesisPortal.getStage(), controller.getStageC()));
 
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("tiledmaps/Genesis.tmx");
         renderer = new IsometricTiledMapRenderer(map, 0.2f);
         gameCam.position.set(1886,105,0);
 
-        backTxr = new Texture("back.png");
-        Drawable backDraw = new TextureRegionDrawable(new TextureRegion(backTxr));
-        ImageButton btnBack = new ImageButton(backDraw);
-        btnBack.setPosition(gameCam.viewportWidth - (gameCam.viewportWidth / 4), gameCam.viewportHeight / 6);
+        backButton.getStage().addActor(backButton.getTable());
 
-        btnBack.addListener(new ClickListener(){
+        backButton.getBtnBack().addListener(new ClickListener(){
+
             @Override
-            public boolean touchDown(InputEvent e, float x, float y, int point, int button){
+            public boolean touchDown(InputEvent event, float x, float y, int point, int button){
+
                 gsm.set(new LoadStates(gsm));
-                dispose();
-                return false;
+
+                return true;
             }
+
         });
 
-        actualGameButtons.getBtnHome().addListener(new ClickListener(){
-            @Override
-            public boolean touchDown(InputEvent e, float x, float y, int point, int button){
-                gsm.set(new LoadStates(gsm));
-                dispose();
-                return false;
-            }
-        });
-
-        stage.addActor(btnBack);
-        actualGameButtons.getStage().addActor(actualGameButtons.getBtnHome());
+        controller.getStageC().addActor(controller.getBtnUp());
+        controller.getStageC().addActor(controller.getBtnDown());
+        controller.getStageC().addActor(controller.getBtnLeft());
+        controller.getStageC().addActor(controller.getBtnRight());
 
     }
 
@@ -84,20 +92,58 @@ public class LoadGenesis extends GameState {
     protected void handleInput() {
 
         if(Gdx.input.justTouched()){
-            System.out.println(gameCam.position);
+                System.out.println("this is the X: " + Gdx.input.getX());
+                System.out.println("this is the Y: " + Gdx.input.getY());
         }
 
         if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-            gameCam.translate(-6, 3, 0);
+            gameCam.translate(-6 * 4, 3 * 4, 0);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-            gameCam.translate(6, -3, 0);
+            gameCam.translate(6 * 4, -3 * 4, 0);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            gameCam.translate(-6, -3, 0);
+            gameCam.translate(-6 * 4, -3 * 4, 0);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-            gameCam.translate(6, 3, 0);
+            gameCam.translate(6 * 4, 3 * 4, 0);
+        }
+
+        if (controller.isLeftPressed()){
+
+                mainCharacter.walkLeft(1);
+
+//                mainCharacter.setLeft();
+            mainCharacter.getCamera().translate(6 * 4,0,-3 * 4);
+                System.out.println(gameCam.position);
+            }
+
+        else if (controller.isRightPressed()){
+
+                mainCharacter.walkRight(1);
+//                mainCharacter.setRight();
+               mainCharacter.getCamera().translate(-6 * 4,0,3 *4);
+                System.out.println(gameCam.position);
+
+
+        }
+        else if (controller.isUpPressed()){
+
+                mainCharacter.walkUp(1);
+//                mainCharacter.setUp();
+            mainCharacter.getCamera().translate(6 * 4,0,3 * 4);
+                System.out.println(gameCam.position);
+
+
+        }
+        else if (controller.isDownPressed()){
+
+                mainCharacter.walkDown(1);
+//                mainCharacter.setDown();
+                mainCharacter.getCamera().translate(-6 * 4,0,-3 * 4);
+                System.out.println(gameCam.position);
+
+
         }
 
 
@@ -110,6 +156,7 @@ public class LoadGenesis extends GameState {
 
         gameCam.update();
         renderer.setView(gameCam);
+        mainCharacter.updateEntity(dt);
 
 //        mainCharacter.update(dt);
     }
@@ -123,10 +170,12 @@ public class LoadGenesis extends GameState {
 
         stage.act();
         stage.draw();
-        actualGameButtons.getStage().draw();
 
-//        mainCharacter.render();
-//        controller.render();
+
+        backButton.getStage().draw();
+        genesisPortal.getStage().draw();
+        mainCharacter.render();
+        controller.render();
 
     }
 
