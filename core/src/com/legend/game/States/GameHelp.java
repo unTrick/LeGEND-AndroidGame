@@ -64,11 +64,11 @@ public class GameHelp extends GameState{
         table.setFillParent(true);
 
 
-        String buttonTitle = "Button Contorls";
+        String buttonTitle = "Button Controls";
         String helpTitle = "Instructions";
 
         String instructContent = "Moving Around\n" +
-                "\t- Move the character anywhere using the arrow keus and explore the area to finish a task.\n" +
+                "\t- Move the character anywhere using the arrow buttons and W,A,S,D and explore the area to finish a task.\n" +
                 "\n" +
                 "Talking to someone\n" +
                 "\t- To talk to a person, draw close.near to one of them. You see a bubble appears that contains message or instructions.\n" +
@@ -81,7 +81,7 @@ public class GameHelp extends GameState{
         String thirdTitle = "Load Game Controls";
         String fourthTitle = "Other Controls";
 
-        String firstContent = "1. Left, Right, Down and Up Buttons\n" +
+        String firstContent = "1. Left, Right, Down and Up Buttons Or W,A,S,D\n" +
                 "\t- moves the main character\n" +
                 "2. Grab Button\n" +
                 "\t- grab things in the area\n" +

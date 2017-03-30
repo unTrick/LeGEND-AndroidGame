@@ -1,13 +1,18 @@
 package com.legend.game.States;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -29,6 +34,8 @@ public class LoadStates extends GameState {
     private Stage stage;
     private Image background;
     private Texture backTxr, gen, exo, levi, numb, deu;
+    private Label title;
+    BitmapFont font;
 
     public LoadStates (final GameStateManager gsm){
         super(gsm);
@@ -38,12 +45,21 @@ public class LoadStates extends GameState {
         stage.addActor(background);
         Gdx.input.setInputProcessor(stage);
 
+        FileHandle fontFile = Gdx.files.internal("font/Candarab.ttf");
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
+        FreeTypeFontGenerator.FreeTypeFontParameter contentParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        contentParameter.size = 50;
+        font = generator.generateFont(contentParameter);
+
         backTxr = new Texture("back.png");
         gen = new Texture("Book/genesisIcon.png");
         exo = new Texture("Book/exodusIcon.png");
         levi = new Texture("Book/leviticusIcon.png");
         numb = new Texture("Book/numbersIcon.png");
         deu = new Texture("Book/deuteronomyIcon.png");
+
+        title = new Label("Level Selection Menu", new Label.LabelStyle(font, Color.WHITE));
+        title.setPosition((stage.getWidth() / 2) - (title.getWidth() / 2), 180);
 
         Drawable backDraw = new TextureRegionDrawable(new TextureRegion(backTxr));
         Drawable genDraw = new TextureRegionDrawable(new TextureRegion(gen));
@@ -67,11 +83,11 @@ public class LoadStates extends GameState {
 
 
         btnBack.setPosition(stage.getWidth() - (stage.getWidth() / 8), stage.getHeight() / 8);
-        btnGen.setPosition((stage.getWidth() / 2) - (stage.getWidth() / 4), (stage.getHeight() /2) - (gen.getHeight() / 4));
-        btnExo.setPosition((stage.getWidth() / 2) - (stage.getWidth() / 8), (stage.getHeight() /2) - (exo.getHeight() / 4));
-        btnLevi.setPosition(stage.getWidth() / 2, (stage.getHeight() /2) - (levi.getHeight() / 4));
-        btnNumb.setPosition((stage.getWidth() / 2) + (stage.getWidth() / 8), (stage.getHeight() /2) - (numb.getHeight() / 4));
-        btnDeu.setPosition(stage.getWidth() - (stage.getWidth() / 4), (stage.getHeight() /2) - (deu.getHeight() / 4));
+        btnGen.setPosition((stage.getWidth() / 2) - ((stage.getWidth() / 4) + (btnGen.getWidth() / 2)), (stage.getHeight() /2) - (gen.getHeight() / 4));
+        btnExo.setPosition((stage.getWidth() / 2) - ((stage.getWidth() / 8) + (btnExo.getWidth() / 2)), (stage.getHeight() /2) - (exo.getHeight() / 4));
+        btnLevi.setPosition((stage.getWidth() / 2) - (btnLevi.getWidth() / 2), (stage.getHeight() /2) - (levi.getHeight() / 4));
+        btnNumb.setPosition((stage.getWidth() / 2) + ((stage.getWidth() / 8) - (btnNumb.getWidth() / 2)), (stage.getHeight() /2) - (numb.getHeight() / 4));
+        btnDeu.setPosition(stage.getWidth() - ((stage.getWidth() / 4) + (btnDeu.getWidth() / 2)), (stage.getHeight() /2) - (deu.getHeight() / 4));
 
         btnBack.addListener(new ClickListener(){
             @Override
@@ -135,6 +151,7 @@ public class LoadStates extends GameState {
         stage.addActor(btnLevi);
         stage.addActor(btnNumb);
         stage.addActor(btnDeu);
+        stage.addActor(title);
     }
 
     @Override

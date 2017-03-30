@@ -55,8 +55,6 @@ public class BibleBook extends GameState {
         bookOfLeviticus = new BookOfLeviticus();
         bookOfNumbers = new BookOfNumbers();
 
-        stage.addAction(Actions.delay(1));
-
         Gdx.input.setInputProcessor(new InputMultiplexer( stage, bookControls.getStage(), new SimpleDirectionGestureDetector(new SimpleDirectionGestureDetector.DirectionListener() {
             @Override
             public void onLeft() {
@@ -70,24 +68,38 @@ public class BibleBook extends GameState {
 
             @Override
             public void onUp() {
-                bookOfGenesis.getCamera().translate(0, -20,0);
-                bookOfLeviticus.getCamera().translate(0, -20,0);
-                bookOfDeuteronomy.getCamera().translate(0, -20,0);
-                bookOfNumbers.getCamera().translate(0, -20,0);
-                bookOfExodus.getCamera().translate(0, -20,0);
 
+                if(bookOfGenesis.getCamera().position.y < -500 || bookOfLeviticus.getCamera().position.y < -500
+                        || bookOfDeuteronomy.getCamera().position.y < -500 || bookOfNumbers.getCamera().position.y < -500
+                        || bookOfExodus.getCamera().position.y < -500){
+                        //TODO EMPTY
+                }
+                else {
+                    bookOfGenesis.getCamera().translate(0, -20,0);
+                    bookOfLeviticus.getCamera().translate(0, -20,0);
+                    bookOfDeuteronomy.getCamera().translate(0, -20,0);
+                    bookOfNumbers.getCamera().translate(0, -20,0);
+                    bookOfExodus.getCamera().translate(0, -20,0);
+                }
 
             }
 
             @Override
             public void onDown() {
-
-                bookOfGenesis.getCamera().translate(0, 20,0);
-                bookOfLeviticus.getCamera().translate(0, 20,0);
-                bookOfDeuteronomy.getCamera().translate(0, 20,0);
-                bookOfNumbers.getCamera().translate(0, 20,0);
-                bookOfExodus.getCamera().translate(0, 20,0);
-
+                if(bookOfGenesis.getCamera().position.y > Gdx.graphics.getHeight() / 2
+                        || bookOfLeviticus.getCamera().position.y > Gdx.graphics.getHeight() / 2
+                        || bookOfDeuteronomy.getCamera().position.y > Gdx.graphics.getHeight() / 2
+                        || bookOfNumbers.getCamera().position.y > Gdx.graphics.getHeight() / 2
+                        || bookOfExodus.getCamera().position.y > Gdx.graphics.getHeight() / 2){
+                        //TODO EMPTY
+                }
+                else {
+                    bookOfGenesis.getCamera().translate(0, 20,0);
+                    bookOfLeviticus.getCamera().translate(0, 20,0);
+                    bookOfDeuteronomy.getCamera().translate(0, 20,0);
+                    bookOfNumbers.getCamera().translate(0, 20,0);
+                    bookOfExodus.getCamera().translate(0, 20,0);
+                }
             }
         })));
 
@@ -95,31 +107,27 @@ public class BibleBook extends GameState {
         selectionTable.setFillParent(true);
         selectionTable.top();
 
-        selectionTable.add(bookControls.getBtnGen()).width(200).padLeft(10);
-        selectionTable.add(bookControls.getBtnExo()).width(200).padLeft(10);
-        selectionTable.add(bookControls.getBtnLev()).width(200).padLeft(10);
-        selectionTable.add(bookControls.getBtnNum()).width(200).padLeft(10);
-        selectionTable.add(bookControls.getBtnDeu()).width(200).padLeft(10);
-        selectionTable.add(bookControls.getBack()).width(200).padLeft(10);
+        selectionTable.add(bookControls.getBtnGen()).width(200).height(100).padLeft(10);
+        selectionTable.add(bookControls.getBtnExo()).width(200).height(100).padLeft(10);
+        selectionTable.add(bookControls.getBtnLev()).width(200).height(100).padLeft(10);
+        selectionTable.add(bookControls.getBtnNum()).width(200).height(100).padLeft(10);
+        selectionTable.add(bookControls.getBtnDeu()).width(200).height(100).padLeft(10);
+        selectionTable.add(bookControls.getBack()).width(200).height(100).padLeft(10);
         selectionTable.row();
-        selectionTable.add(bookControls.getBtnPrev()).width(100).top();
+        selectionTable.add(bookControls.getBtnPrev()).width(200).center();
         selectionTable.add();
         selectionTable.add();
         selectionTable.add();
         selectionTable.add();
-        selectionTable.add(bookControls.getBtnNext()).width(100).top();
+        selectionTable.add(bookControls.getBtnNext()).width(200).center();
         selectionTable.row();
 
-
-        stage.addActor(selectionTable);
 
         bookControls.getBack().addListener(new ClickListener(){
 
             @Override
-            public void clicked(InputEvent e, float x, float y){
-                stage.addAction(Actions.moveBy(0, -stage.getHeight(), 0.2f));
+            public void touchUp(InputEvent event, float x, float y, int point, int button){
                 gsm.set(new GameMenu(gsm));
-                System.out.println("touch");
             }
 
         });
@@ -131,12 +139,17 @@ public class BibleBook extends GameState {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int point, int button){
 
-                bookOfGenesis.getStage().addActor(bookOfGenesis.getTable1());
 
+                bookOfGenesis.getStage().addActor(bookOfGenesis.getTable1());
                 bookOfExodus.removeAll();
                 bookOfDeuteronomy.removeAll();
                 bookOfNumbers.removeAll();
                 bookOfLeviticus.removeAll();
+
+                bookControls.getBtnDeu().setChecked(false);
+                bookControls.getBtnExo().setChecked(false);
+                bookControls.getBtnLev().setChecked(false);
+                bookControls.getBtnNum().setChecked(false);
 
                 return true;
             }
@@ -155,7 +168,13 @@ public class BibleBook extends GameState {
                 bookOfNumbers.removeAll();
                 bookOfLeviticus.removeAll();
 
+                bookControls.getBtnGen().setChecked(false);
+                bookControls.getBtnDeu().setChecked(false);
+                bookControls.getBtnLev().setChecked(false);
+                bookControls.getBtnNum().setChecked(false);
+
                 return true;
+
             }
 
         });
@@ -171,6 +190,11 @@ public class BibleBook extends GameState {
                 bookOfDeuteronomy.removeAll();
                 bookOfNumbers.removeAll();
                 bookOfExodus.removeAll();
+
+                bookControls.getBtnGen().setChecked(false);
+                bookControls.getBtnExo().setChecked(false);
+                bookControls.getBtnDeu().setChecked(false);
+                bookControls.getBtnNum().setChecked(false);
 
                 return true;
             }
@@ -189,6 +213,11 @@ public class BibleBook extends GameState {
                 bookOfExodus.removeAll();
                 bookOfLeviticus.removeAll();
 
+                bookControls.getBtnGen().setChecked(false);
+                bookControls.getBtnExo().setChecked(false);
+                bookControls.getBtnLev().setChecked(false);
+                bookControls.getBtnDeu().setChecked(false);
+
                 return true;
             }
 
@@ -206,12 +235,93 @@ public class BibleBook extends GameState {
                 bookOfNumbers.removeAll();
                 bookOfLeviticus.removeAll();
 
+                bookControls.getBtnGen().setChecked(false);
+                bookControls.getBtnExo().setChecked(false);
+                bookControls.getBtnLev().setChecked(false);
+                bookControls.getBtnNum().setChecked(false);
+
+                return true;
+             }
+
+        });
+
+        bookControls.getBtnNext().addListener(new ClickListener(){
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int point, int button) {
+
+
+                if(bookControls.getBtnGen().isChecked()){
+                    bookOfGenesis.getTable1().remove();
+                        bookOfGenesis.getStage().addActor(bookOfGenesis.getTable2());
+                }
+
+                if(bookControls.getBtnExo().isChecked()){
+                    bookOfExodus.getTable1().remove();
+                    bookOfExodus.getStage().addActor(bookOfExodus.getTable2());
+                }
+
+                if(bookControls.getBtnLev().isChecked()){
+                    bookOfLeviticus.getTable1().remove();
+                    bookOfLeviticus.getStage().addActor(bookOfLeviticus.getTable2());
+                }
+
+                if(bookControls.getBtnNum().isChecked()){
+                    bookOfNumbers.getTable1().remove();
+                    bookOfNumbers.getStage().addActor(bookOfNumbers.getTable2());
+                }
+
+                if(bookControls.getBtnDeu().isChecked()){
+                    bookOfDeuteronomy.getTable1().remove();
+                    bookOfDeuteronomy.getStage().addActor(bookOfDeuteronomy.getTable2());
+                }
+
+                return true;
+            }
+
+        });
+
+        bookControls.getBtnPrev().addListener(new ClickListener(){
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int point, int button) {
+
+
+                if(bookControls.getBtnGen().isChecked()){
+                    bookOfGenesis.getTable2().remove();
+                    bookOfGenesis.getStage().addActor(bookOfGenesis.getTable1());
+                }
+
+                if(bookControls.getBtnExo().isChecked()){
+                    bookOfExodus.getTable2().remove();
+                    bookOfExodus.getStage().addActor(bookOfExodus.getTable1());
+                }
+
+                if(bookControls.getBtnLev().isChecked()){
+                    bookOfLeviticus.getTable2().remove();
+                    bookOfLeviticus.getStage().addActor(bookOfLeviticus.getTable1());
+                }
+
+                if(bookControls.getBtnNum().isChecked()){
+                    bookOfNumbers.getTable2().remove();
+                    bookOfNumbers.getStage().addActor(bookOfNumbers.getTable1());
+                }
+
+                if(bookControls.getBtnDeu().isChecked()){
+                    bookOfDeuteronomy.getTable2().remove();
+                    bookOfDeuteronomy.getStage().addActor(bookOfDeuteronomy.getTable1());
+                }
+
                 return true;
             }
 
         });
 
 
+
+        bookOfGenesis.getStage().addActor(bookOfGenesis.getTable1());
+        bookControls.getBtnGen().setChecked(true);
+        stage.addActor(selectionTable);
 
     }
 

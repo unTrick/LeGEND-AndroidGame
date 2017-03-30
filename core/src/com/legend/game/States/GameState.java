@@ -1,6 +1,9 @@
 package com.legend.game.States;
 
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -29,7 +32,6 @@ public abstract class GameState {
         gameCam = new OrthographicCamera();
         gameCam.setToOrtho(false, LeGENDGAME.WIDTH, LeGENDGAME.HEIGHT);
         gameView = new StretchViewport(1280, 720, gameCam);
-
     }
 
     protected abstract void handleInput();

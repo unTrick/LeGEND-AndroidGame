@@ -2,14 +2,25 @@ package com.legend.game.States;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.physics.bullet.softbody.btSoftBody;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -25,16 +36,25 @@ import com.legend.game.LeGENDGAME;
 public class GameMenu extends GameState{
 
     private Texture background, start, load, setting, help, book, exit;
-    private Sound clickSound;
+
     private Stage stage;
     private Image bg;
+    private TextButton btnAccount, btnOk;
+    private Table tblAccount;
+    private TextField user, pass;
     //private ImageButton btnStart, btnLoad, btnSetting, btnHelp, btnBook;
+
+
+    private final static String STATUSUI_TEXTURE_ATLAS_PATH = "skin/statusui.atlas";
+    private final static String STATUSUI_SKIN_PATH = "skin/statusui.json";
+
+    public static TextureAtlas STATUSUI_TEXTUREATLAS;
+    public static Skin STATUSUI_SKIN ;
 
 
     public GameMenu(final GameStateManager gsm) {
         super(gsm);
         background = new Texture("GameMenuBG.jpg");
-        clickSound = Gdx.audio.newSound(Gdx.files.internal("button-16.mp3"));
         stage = new Stage(new StretchViewport(1280, 720));
         new Timer().stop();
 
@@ -42,6 +62,12 @@ public class GameMenu extends GameState{
 
         bg = new Image(background);
         stage.addActor(bg);
+
+        FileHandle fontFile = Gdx.files.internal("font/Candarab.ttf");
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 30;
+        BitmapFont font = generator.generateFont(parameter);
 
         start = new Texture("start.png");
         Drawable drawStart = new TextureRegionDrawable(new TextureRegion(start));
@@ -52,8 +78,10 @@ public class GameMenu extends GameState{
         btnStart.addListener(new ClickListener(){
            @Override
             public void touchUp(InputEvent e, float x, float y, int point, int button){
-                dispose();
+
+               LeGENDGAME.clickSound.play();
                 gsm.set(new GenesisIntro(gsm));
+                dispose();
            }
         });
 
@@ -67,6 +95,7 @@ public class GameMenu extends GameState{
         btnLoad.addListener(new ClickListener(){
             @Override
             public void touchUp(InputEvent e, float x, float y, int point, int button){
+                LeGENDGAME.clickSound.play();
                 gsm.set(new LoadStates(gsm));
             }
         });
@@ -80,6 +109,7 @@ public class GameMenu extends GameState{
         btnSetting.addListener(new ClickListener(){
             @Override
             public void touchUp(InputEvent e, float x, float y, int point, int button){
+                LeGENDGAME.clickSound.play();
                 gsm.set(new MenuSetting(gsm));
             }
         });
@@ -93,6 +123,7 @@ public class GameMenu extends GameState{
         btnHelp.addListener(new ClickListener(){
             @Override
             public void touchUp(InputEvent e, float x, float y, int point, int button){
+                LeGENDGAME.clickSound.play();
                 gsm.set(new GameHelp(gsm));
             }
         });
@@ -106,21 +137,112 @@ public class GameMenu extends GameState{
         btnBook.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent e, float x, float y){
+                LeGENDGAME.clickSound.play();
                 gsm.set(new BibleBook(gsm));
+                dispose();
+
             }
         });
+
+        Drawable down = new TextureRegionDrawable(new TextureRegion(new Texture("skin/downDrawable.png"), 200, 50));
+        Drawable up = new TextureRegionDrawable(new TextureRegion(new Texture("skin/upDrawable.png"), 200, 50));
+
+        btnAccount = new TextButton("User Account", new TextButton.TextButtonStyle(up,down,up,font));
+        btnAccount.setPosition(stage.getWidth() - (stage.getWidth() / 4), stage.getHeight() - (stage.getHeight() / 10));
 
         exit = new Texture("close.png");
         Drawable drawExit = new TextureRegionDrawable(new TextureRegion(exit));
         ImageButton btnExit = new ImageButton(drawExit);
         btnExit.setPosition(stage.getWidth() - (stage.getWidth() / 16), stage.getHeight() - (stage.getHeight() / 12));
         btnExit.setSize(50,50);
+
+
+
+        tblAccount = new Table();
+        tblAccount.background(new TextureRegionDrawable(new TextureRegion(new Texture("popup/useraccount.png"), 500, 329)));
+        tblAccount.setSize(500, 329);
+//        tblAccount.top();
+        tblAccount.setPosition((stage.getWidth() / 2) - (tblAccount.getWidth() / 2), (stage.getHeight() / 2) - (tblAccount.getHeight() / 2));
+
+        Label lblAcc = new Label("User Account", new Label.LabelStyle(font, Color.BLACK));
+        Label lblUsername = new Label("Username: ", new Label.LabelStyle(font, Color.BLACK));
+        Label lblPassword = new Label("Password: ", new Label.LabelStyle(font, Color.BLACK));
+
+        STATUSUI_TEXTUREATLAS = new TextureAtlas(STATUSUI_TEXTURE_ATLAS_PATH);
+        STATUSUI_SKIN = new Skin(Gdx.files.internal(STATUSUI_SKIN_PATH), STATUSUI_TEXTUREATLAS);
+
+        user = new TextField("", STATUSUI_SKIN);
+        pass = new TextField("", STATUSUI_SKIN);
+
+
+        ImageButton btnCloseAcc = new ImageButton(drawExit);
+        btnOk = new TextButton("Login", new TextButton.TextButtonStyle(up,down,up,font));
+
+        tblAccount.add().top().width(50);
+        tblAccount.add().top().width(50);
+        tblAccount.add(btnCloseAcc).top().width(50);
+        tblAccount.row();
+        tblAccount.add();
+        tblAccount.add(lblAcc).padBottom(20);
+        tblAccount.add();
+        tblAccount.row();
+        tblAccount.add(lblUsername);
+        tblAccount.add();
+        tblAccount.add(user);
+        tblAccount.row();
+        tblAccount.add(lblPassword);
+        tblAccount.add();
+        tblAccount.add(pass);
+        tblAccount.row();
+        tblAccount.add();
+        tblAccount.add(btnOk).width(100).height(50);
+        tblAccount.add();
+
+        btnCloseAcc.addListener(new ClickListener(){
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+                tblAccount.remove();
+
+                return true;
+            }
+        });
+
+        btnOk.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+                tblAccount.remove();
+
+                return true;
+            }
+        });
+
+
+        btnAccount.addListener(new ClickListener(){
+
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                stage.addActor(tblAccount);
+                return true;
+            }
+        });
+
+
+
+
+
+
         stage.addActor(btnExit);
+        stage.addActor(btnAccount);
 
         btnExit.addListener(new ClickListener(){
            @Override
             public void touchUp(InputEvent e, float x, float y, int point, int button){
                 Gdx.app.exit();
+                dispose();
            }
         });
 
@@ -163,8 +285,6 @@ public class GameMenu extends GameState{
     @Override
     public void dispose() {
         background.dispose();
-        clickSound.dispose();
-        LeGENDGAME.backgroundMusic.dispose();
     }
 
 }

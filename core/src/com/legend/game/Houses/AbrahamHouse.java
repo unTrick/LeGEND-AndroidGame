@@ -1,6 +1,7 @@
 package com.legend.game.Houses;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -25,6 +26,7 @@ import com.legend.game.Buttons.Controller;
 import com.legend.game.HUD.HUD;
 import com.legend.game.LeGENDGAME;
 import com.legend.game.Maps.Haran;
+import com.legend.game.PopupBox.InsideGameMenu;
 import com.legend.game.PopupBox.Inventory;
 import com.legend.game.States.GameMenu;
 import com.legend.game.States.GameState;
@@ -45,6 +47,7 @@ public class AbrahamHouse extends GameState {
     private Controller controller;
     private ActualGameButtons actualGameButtons;
     private Inventory inventory;
+    private InsideGameMenu insideGameMenu;
 
     private TiledMap map; // the map itself
     private IsometricTiledMapRenderer renderer; // it renders the map into the scree
@@ -52,14 +55,15 @@ public class AbrahamHouse extends GameState {
 
     public AbrahamHouse(GameStateManager gsm){
         super(gsm);
-
+        LeGENDGAME.backgroundMusic.play();
         controller = new Controller();
         hud = new HUD();
         inventory = new Inventory();
+        insideGameMenu = new InsideGameMenu();
         actualGameButtons = new ActualGameButtons();
 
         stage = new Stage(gameView);
-        Gdx.input.setInputProcessor(new InputMultiplexer(controller.getStageC(), actualGameButtons.getStage(), inventory.getStage()));
+        Gdx.input.setInputProcessor(new InputMultiplexer(controller.getStageC(), actualGameButtons.getStage(), inventory.getStage(), insideGameMenu.getStage()));
 
         gameCam.position.set(500,200,0);
 
@@ -81,13 +85,14 @@ public class AbrahamHouse extends GameState {
         controller.getStageC().addActor(controller.getBtnLeft());
         controller.getStageC().addActor(controller.getBtnRight());
 
-        actualGameButtons.getStage().addActor(actualGameButtons.getBtnHome());
+        actualGameButtons.getStage().addActor(actualGameButtons.getBtnMenu());
 
-        actualGameButtons.getBtnHome().addListener(new ClickListener(){
+        actualGameButtons.getBtnMenu().addListener(new ClickListener(){
 
             @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gsm.set(new GameMenu(gsm));
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                insideGameMenu.open();
+                return false;
             }
         });
 
@@ -109,6 +114,77 @@ public class AbrahamHouse extends GameState {
             }
         });
 
+        insideGameMenu.getResume().addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                insideGameMenu.close();
+
+                insideGameMenu.getResume().setChecked(false);
+                insideGameMenu.getSave().setChecked(false);
+                insideGameMenu.getLoad().setChecked(false);
+                insideGameMenu.getHome().setChecked(false);
+                insideGameMenu.getExit().setChecked(false);
+
+                return true;
+            }
+        });
+
+        insideGameMenu.getSave().addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+
+
+                insideGameMenu.getResume().setChecked(false);
+                insideGameMenu.getSave().setChecked(false);
+                insideGameMenu.getLoad().setChecked(false);
+                insideGameMenu.getHome().setChecked(false);
+                insideGameMenu.getExit().setChecked(false);
+
+                return true;
+            }
+        });
+
+        insideGameMenu.getLoad().addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+
+
+                insideGameMenu.getResume().setChecked(false);
+                insideGameMenu.getSave().setChecked(false);
+                insideGameMenu.getLoad().setChecked(false);
+                insideGameMenu.getHome().setChecked(false);
+                insideGameMenu.getExit().setChecked(false);
+
+                return true;
+            }
+        });
+        insideGameMenu.getHome().addListener(new ClickListener(){
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+
+                gsm.set(new GameMenu(gsm));
+
+                insideGameMenu.getResume().setChecked(false);
+                insideGameMenu.getSave().setChecked(false);
+                insideGameMenu.getLoad().setChecked(false);
+                insideGameMenu.getHome().setChecked(false);
+                insideGameMenu.getExit().setChecked(false);
+
+            }
+        });
+        insideGameMenu.getExit().addListener(new ClickListener(){
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                Gdx.app.exit();
+
+                insideGameMenu.getResume().setChecked(false);
+                insideGameMenu.getSave().setChecked(false);
+                insideGameMenu.getLoad().setChecked(false);
+                insideGameMenu.getHome().setChecked(false);
+                insideGameMenu.getExit().setChecked(false);
+
+            }
+        });
 
 
     }
@@ -118,6 +194,53 @@ public class AbrahamHouse extends GameState {
 
         if(Gdx.input.justTouched()){
         }
+
+
+        if (Gdx.input.isKeyPressed(Input.Keys.A)){
+            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+                mainCharacter.walkLeft(2);
+            }
+            else {
+                mainCharacter.walkLeft(1);
+//                mainCharacter.setLeft();
+                System.out.println(gameCam.position);
+            }
+
+        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.D)){
+            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+                mainCharacter.walkRight(2);
+            }
+            else {
+                mainCharacter.walkRight(1);
+//                mainCharacter.setRight();
+                System.out.println(gameCam.position);
+            }
+
+        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.W)){
+            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+                mainCharacter.walkUp(2);
+            }
+            else {
+                mainCharacter.walkUp(1);
+//                mainCharacter.setUp();
+                System.out.println(gameCam.position);
+            }
+
+        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.S)){
+            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+                mainCharacter.walkDown(2);
+            }
+            else {
+                mainCharacter.walkDown(1);
+//                mainCharacter.setDown();
+                System.out.println(gameCam.position);
+            }
+
+        }
+
 
 
         if (controller.isLeftPressed()){
@@ -216,6 +339,7 @@ public class AbrahamHouse extends GameState {
         controller.render();
         actualGameButtons.getStage().draw();
         inventory.getStage().draw();
+        insideGameMenu.getStage().draw();
         hud.stage.draw();
     }
 

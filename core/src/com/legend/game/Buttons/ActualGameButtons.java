@@ -21,10 +21,10 @@ import com.legend.game.LeGENDGAME;
 
 public class ActualGameButtons {
 
-    private Texture home, talk, run, grab, inventory;
-    private ImageButton btnHome, btnTalk, btnRun, btnGrab, btnInventory;
+    private Texture menu, talk, run, grab, inventory;
+    private ImageButton btnMenu, btnTalk, btnRun, btnGrab, btnInventory;
     private Stage stage;
-    private Drawable drawHome, drawTalk, drawRun, drawGrab, drawInventory;
+    private Drawable drawMenu, drawTalk, drawRun, drawGrab, drawInventory;
     private boolean runPressed;
 
     public ActualGameButtons(){
@@ -32,16 +32,16 @@ public class ActualGameButtons {
         stage = new Stage();
 
 
-        home = new Texture("close.png");
+        menu = new Texture("popup/Menu.png");
         talk = new Texture("talk.png");
         run = new Texture("run.png");
         grab = new Texture("grab.png");
         inventory = new Texture("inventory.png");
 
-        drawHome = new TextureRegionDrawable(new TextureRegion(home));
-        btnHome = new ImageButton(drawHome);
-        btnHome.setSize(50,50);
-        btnHome.setPosition(stage.getWidth() - (stage.getWidth() / 16), stage.getHeight() - (stage.getHeight() / 12));
+        drawMenu = new TextureRegionDrawable(new TextureRegion(menu));
+        btnMenu = new ImageButton(drawMenu);
+        btnMenu.setSize(50,50);
+        btnMenu.setPosition(stage.getWidth() - (stage.getWidth() / 16), stage.getHeight() - (stage.getHeight() / 12));
 
         drawTalk = new TextureRegionDrawable(new TextureRegion(talk));
         btnTalk = new ImageButton(drawTalk);
@@ -90,9 +90,6 @@ public class ActualGameButtons {
     }
 
 
-    public ImageButton getBtnHome() {
-        return btnHome;
-    }
 
     public Stage getStage() {
         return stage;
@@ -118,5 +115,9 @@ public class ActualGameButtons {
 
     public ImageButton getBtnInventory() {
         return btnInventory;
+    }
+
+    public ImageButton getBtnMenu() {
+        return btnMenu;
     }
 }

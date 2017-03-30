@@ -1,30 +1,22 @@
 package com.legend.game.Maps;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
-import com.badlogic.gdx.math.Quaternion;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
 import com.legend.game.BlenderObjects.Extra;
 import com.legend.game.BlenderObjects.MainCharacter;
 import com.legend.game.Buttons.ActualGameButtons;
 import com.legend.game.Buttons.Controller;
 import com.legend.game.HUD.HUD;
+import com.legend.game.PopupBox.InsideGameMenu;
 import com.legend.game.PopupBox.Inventory;
 import com.legend.game.Screen.GameScreen;
 import com.legend.game.States.GameMenu;
@@ -40,12 +32,12 @@ public class Haran extends GameState {
     private Stage stage;
 
     private MainCharacter mainCharacter;
-    private Extra extra;
 
     private HUD hud;
     private Controller controller;
     private ActualGameButtons actualGameButtons;
     private Inventory inventory;
+    private InsideGameMenu insideGameMenu;
 
     private TmxMapLoader mapLoader;//load the map into the game
     private TiledMap map; // the map itself
@@ -53,14 +45,12 @@ public class Haran extends GameState {
 
     private GameScreen gameScreen;
 
-    ModelBatch modelBatch;
+
 
     public Haran(final GameStateManager gsm){
         super(gsm);
-        modelBatch = new ModelBatch();
 
         mainCharacter = new MainCharacter(628, 0, 156);
-        extra = new Extra();
 
         gameScreen = new GameScreen();
 
@@ -68,11 +58,10 @@ public class Haran extends GameState {
         hud = new HUD();
         inventory = new Inventory();
         actualGameButtons = new ActualGameButtons();
+        insideGameMenu = new InsideGameMenu();
 
-
-        stage = new Stage(gameScreen.getScreenViewPort());
-
-        Gdx.input.setInputProcessor(new InputMultiplexer(controller.getStageC(), actualGameButtons.getStage(), inventory.getStage()));
+        stage = new Stage(gameView);
+        Gdx.input.setInputProcessor(new InputMultiplexer(controller.getStageC(), actualGameButtons.getStage(), inventory.getStage(), insideGameMenu.getStage()));
 
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("tiledmaps/Haran.tmx");
@@ -86,19 +75,19 @@ public class Haran extends GameState {
 
     private void actualGame(){
 
-
         controller.getStageC().addActor(controller.getBtnUp());
         controller.getStageC().addActor(controller.getBtnDown());
         controller.getStageC().addActor(controller.getBtnLeft());
         controller.getStageC().addActor(controller.getBtnRight());
 
-        actualGameButtons.getStage().addActor(actualGameButtons.getBtnHome());
+        actualGameButtons.getStage().addActor(actualGameButtons.getBtnMenu());
 
-        actualGameButtons.getBtnHome().addListener(new ClickListener(){
+        actualGameButtons.getBtnMenu().addListener(new ClickListener(){
 
             @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gsm.set(new GameMenu(gsm));
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                insideGameMenu.open();
+                return false;
             }
         });
 
@@ -120,16 +109,78 @@ public class Haran extends GameState {
             }
         });
 
+        insideGameMenu.getResume().addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                insideGameMenu.close();
 
-        extra.getAssets().load("abraham.g3db", Model.class);
-        extra.getAssets().finishLoading();
+                insideGameMenu.getResume().setChecked(false);
+                insideGameMenu.getSave().setChecked(false);
+                insideGameMenu.getLoad().setChecked(false);
+                insideGameMenu.getHome().setChecked(false);
+                insideGameMenu.getExit().setChecked(false);
+
+                return true;
+            }
+        });
+
+        insideGameMenu.getSave().addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
 
 
+                insideGameMenu.getResume().setChecked(false);
+                insideGameMenu.getSave().setChecked(false);
+                insideGameMenu.getLoad().setChecked(false);
+                insideGameMenu.getHome().setChecked(false);
+                insideGameMenu.getExit().setChecked(false);
 
-        // Set up environment with simple lighting
+                return true;
+            }
+        });
 
-        extra.getEnvironment().set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-        extra.getEnvironment().add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -0.8f, -10f, -10f));
+        insideGameMenu.getLoad().addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+
+
+                insideGameMenu.getResume().setChecked(false);
+                insideGameMenu.getSave().setChecked(false);
+                insideGameMenu.getLoad().setChecked(false);
+                insideGameMenu.getHome().setChecked(false);
+                insideGameMenu.getExit().setChecked(false);
+
+                return true;
+            }
+        });
+        insideGameMenu.getHome().addListener(new ClickListener(){
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+
+                gsm.set(new GameMenu(gsm));
+
+                insideGameMenu.getResume().setChecked(false);
+                insideGameMenu.getSave().setChecked(false);
+                insideGameMenu.getLoad().setChecked(false);
+                insideGameMenu.getHome().setChecked(false);
+                insideGameMenu.getExit().setChecked(false);
+
+            }
+        });
+        insideGameMenu.getExit().addListener(new ClickListener(){
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                Gdx.app.exit();
+
+                insideGameMenu.getResume().setChecked(false);
+                insideGameMenu.getSave().setChecked(false);
+                insideGameMenu.getLoad().setChecked(false);
+                insideGameMenu.getHome().setChecked(false);
+                insideGameMenu.getExit().setChecked(false);
+
+            }
+        });
+
 
 
     }
@@ -137,6 +188,51 @@ public class Haran extends GameState {
 
     @Override
     protected void handleInput() {
+
+        if (Gdx.input.isKeyPressed(Input.Keys.A)){
+            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+                mainCharacter.walkLeft(2);
+            }
+            else {
+                mainCharacter.walkLeft(1);
+//                mainCharacter.setLeft();
+                System.out.println(gameCam.position);
+            }
+
+        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.D)){
+            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+                mainCharacter.walkRight(2);
+            }
+            else {
+                mainCharacter.walkRight(1);
+//                mainCharacter.setRight();
+                System.out.println(gameCam.position);
+            }
+
+        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.W)){
+            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+                mainCharacter.walkUp(2);
+            }
+            else {
+                mainCharacter.walkUp(1);
+//                mainCharacter.setUp();
+                System.out.println(gameCam.position);
+            }
+
+        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.S)){
+            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+                mainCharacter.walkDown(2);
+            }
+            else {
+                mainCharacter.walkDown(1);
+//                mainCharacter.setDown();
+                System.out.println(gameCam.position);
+            }
+
+        }
 
 
 
@@ -146,6 +242,7 @@ public class Haran extends GameState {
             }
             else {
                 mainCharacter.walkLeft(1);
+//                mainCharacter.setLeft();
                 System.out.println(gameCam.position);
             }
 
@@ -156,6 +253,7 @@ public class Haran extends GameState {
             }
             else {
                 mainCharacter.walkRight(1);
+//                mainCharacter.setRight();
                 System.out.println(gameCam.position);
             }
 
@@ -166,6 +264,7 @@ public class Haran extends GameState {
             }
             else {
                 mainCharacter.walkUp(1);
+//                mainCharacter.setUp();
                 System.out.println(gameCam.position);
             }
 
@@ -176,11 +275,11 @@ public class Haran extends GameState {
             }
             else {
                 mainCharacter.walkDown(1);
+//                mainCharacter.setDown();
                 System.out.println(gameCam.position);
             }
 
         }
-
 
     }
 
@@ -211,13 +310,10 @@ public class Haran extends GameState {
 
         mainCharacter.render();
 
-        modelBatch.begin(extra.getCamera());
-        modelBatch.render(extra.getInstances(), extra.getEnvironment());
-        modelBatch.end();
-
         controller.render();
         actualGameButtons.getStage().draw();
         inventory.getStage().draw();
+        insideGameMenu.getStage().draw();
         hud.stage.draw();
     }
 

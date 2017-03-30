@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.legend.game.BlenderObjects.MainCharacter;
 import com.legend.game.Buttons.Controller;
 import com.legend.game.Houses.AbrahamHouse;
+import com.legend.game.LeGENDGAME;
 import com.legend.game.States.GameMenu;
 import com.legend.game.States.GameState;
 import com.legend.game.States.GameStateManager;
@@ -32,16 +33,12 @@ public class GenesisIntro extends GameState{
 
     private Stage stage;
     private Image frontIntro, firstCS, secondCS, thirdCS, fourthCS, fifthCS, sixthCS, seventhCS;
-    private static Music storyMusic;
     private Texture btnCont, btnSkip, btnFirstNext, btnSecondNext, btnthirdNext, btnFourthNext, btnFifthNext, btnSixthNext, btnSeventhNext, btnMenu;
 
     public GenesisIntro(final GameStateManager gsm){
         super(gsm);
 
-        storyMusic = Gdx.audio.newMusic(Gdx.files.internal("Intro to Genesis.MP3"));
-        storyMusic.setLooping(true);
-        storyMusic.setVolume(0.5f);
-        storyMusic.play();
+        LeGENDGAME.storyMusic.play();
         stage = new Stage(gameView);
         Gdx.input.setInputProcessor(stage);
 
@@ -171,6 +168,7 @@ public class GenesisIntro extends GameState{
                                                                         seventhCS.remove();
                                                                         btnSeventh.remove();
                                                                         gsm.set(new AbrahamHouse(gsm));
+                                                                        dispose();
 
                                                                     }
                                                                 });
@@ -228,9 +226,8 @@ public class GenesisIntro extends GameState{
                 seventhCS.remove();
                 btnSkips.remove();
                 btnMenus.remove();
-                storyMusic.dispose();
                 gsm.set(new AbrahamHouse(gsm));
-
+                dispose();
                 return false;
             }
         });
@@ -239,7 +236,6 @@ public class GenesisIntro extends GameState{
         btnMenus.addListener(new ClickListener(){
             @Override
             public void touchUp(InputEvent e, float x, float y, int point, int button){
-                storyMusic.pause();
                 gsm.set(new GameMenu(gsm));
                 dispose();
             }
@@ -268,7 +264,7 @@ public class GenesisIntro extends GameState{
 
     @Override
     public void dispose() {
-
+        LeGENDGAME.storyMusic.dispose();
     }
 
     @Override

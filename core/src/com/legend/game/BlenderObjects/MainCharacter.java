@@ -118,33 +118,8 @@ public class MainCharacter {
         inst.calculateTransforms();
 
     }
-//    @Override
+
     public void updateEntity(float dt) {
-//        super.updateEntity(dt);
-//        if (right) {
-//            position.x += MOVE_SIX * dt;
-//            position.z += MOVE_THREE * dt;
-//            inst.transform.setToRotation(new Vector3(-140, 1200, -380),150); // right view
-//            inst.calculateTransforms();
-//        }
-//        if (down) {
-//            position.x += MOVE_SIX * dt;
-//            position.z -= MOVE_THREE * dt;
-//            inst.transform.setToRotation(-560 , 560 , -120,45); //front view
-//            inst.calculateTransforms();
-//        }
-//        if (up) {
-//            position.x -= MOVE_SIX * dt;
-//            position.z += MOVE_THREE * dt;
-//            inst.transform.setToRotation(new Vector3(90 , 1200, -370),210); // back view
-//            inst.calculateTransforms();
-//        }
-//        if (left) {
-//            position.x -= MOVE_SIX * dt;
-//            position.z -= MOVE_THREE * dt;
-//            inst.transform.setToRotation(new Vector3(-500 , -300 , 90),45); // left view
-//            inst.calculateTransforms();
-//        }
 
 
         moving.scl(dt);
@@ -153,26 +128,7 @@ public class MainCharacter {
         moving.scl(1/dt);
         camera.update();
     }
-//
-//    @Override
-//    public void setUp() {
-//        super.setUp();
-//    }
-//
-//    @Override
-//    public void setDown() {
-//        super.setDown();
-//    }
-//
-//    @Override
-//    public void setLeft() {
-//        super.setLeft();
-//    }
-//
-//    @Override
-//    public void setRight() {
-//        super.setRight();
-//    }
+
 
     public OrthographicCamera getCamera() {
         return camera;

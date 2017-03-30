@@ -66,9 +66,9 @@ public class Rameses extends GameState{
         controller.getStageC().addActor(controller.getBtnLeft());
         controller.getStageC().addActor(controller.getBtnRight());
 
-        actualGameButtons.getStage().addActor(actualGameButtons.getBtnHome());
+        actualGameButtons.getStage().addActor(actualGameButtons.getBtnMenu());
 
-        actualGameButtons.getBtnHome().addListener(new ClickListener(){
+        actualGameButtons.getBtnMenu().addListener(new ClickListener(){
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {

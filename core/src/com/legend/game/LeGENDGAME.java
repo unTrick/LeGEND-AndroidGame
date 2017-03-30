@@ -1,13 +1,11 @@
 package com.legend.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Timer;
-import com.legend.game.States.GameMenu;
 import com.legend.game.States.GameStateManager;
 import com.legend.game.States.SplashScreen;
 
@@ -19,18 +17,31 @@ public class LeGENDGAME extends ApplicationAdapter {
 	private GameStateManager gsm;
 	private static SpriteBatch batch;
 	public static Music backgroundMusic;
-
+	public static Music splashSound;
+	public static Music storyMusic;
+	public static Sound clickSound;
 
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		gsm = new GameStateManager();
-		gsm.push(new SplashScreen(gsm));
-		//setScreen(new Screens(this));
+		splashSound = Gdx.audio.newMusic(Gdx.files.internal("splash screen.MP3"));
+		splashSound.setLooping(true);
+		splashSound.setVolume(1f);
+
 		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Background playback.MP3"));
 		backgroundMusic.setLooping(true);
 		backgroundMusic.setVolume(0.5f);
+
+		clickSound = Gdx.audio.newSound(Gdx.files.internal("button-16.mp3"));
+
+		storyMusic = Gdx.audio.newMusic(Gdx.files.internal("Intro to Genesis.MP3"));
+		storyMusic.setLooping(true);
+		storyMusic.setVolume(0.5f);
+
+		gsm = new GameStateManager();
+		gsm.push(new SplashScreen(gsm));
+		//setScreen(new Screens(this));
 	}
 
 	@Override

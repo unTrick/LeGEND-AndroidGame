@@ -1,17 +1,12 @@
 package com.legend.game.States;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.legend.game.LeGENDGAME;
-
-import javafx.stage.Screen;
 
 /**
  * Created by Patrick Sky on 11/26/2016.
@@ -24,20 +19,14 @@ public class SplashScreen extends GameState {
     private Stage stage;
     private Image bg;
 
-    private Music splashSound;
     public SplashScreen(GameStateManager gsm) {
         super(gsm);
         stage = new Stage(gameView);
         splashBackground = new Texture("DevocatLogo.png");
-        splashSound = Gdx.audio.newMusic(Gdx.files.internal("splash screen.MP3"));
-        splashSound.setLooping(true);
-        splashSound.setVolume(5f);
-        splashSound.play();
+        LeGENDGAME.splashSound.play();
 
         bg = new Image(splashBackground);
         stage.addActor(bg);
-
-        stage.addAction(Actions.sequence(Actions.alpha(0),Actions.fadeIn(1)));
     }
 
     @Override
@@ -78,7 +67,7 @@ public class SplashScreen extends GameState {
     @Override
     public void dispose() {
         splashBackground.dispose();
-        splashSound.dispose();
+        LeGENDGAME.splashSound.dispose();
 
     }
 

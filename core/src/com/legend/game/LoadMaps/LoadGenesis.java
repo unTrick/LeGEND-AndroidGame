@@ -96,16 +96,16 @@ public class LoadGenesis extends GameState {
                 System.out.println("this is the Y: " + Gdx.input.getY());
         }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)){
+        if(Gdx.input.isKeyPressed(Input.Keys.W)){
             gameCam.translate(-6 * 4, 3 * 4, 0);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+        if(Gdx.input.isKeyPressed(Input.Keys.S)){
             gameCam.translate(6 * 4, -3 * 4, 0);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+        if(Gdx.input.isKeyPressed(Input.Keys.A)){
             gameCam.translate(-6 * 4, -3 * 4, 0);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+        if(Gdx.input.isKeyPressed(Input.Keys.D)){
             gameCam.translate(6 * 4, 3 * 4, 0);
         }
 
